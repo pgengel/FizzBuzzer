@@ -22,7 +22,7 @@
                 return number.ToString();
             }
 
-            return "Error";
+            return "The number is out of range";
 
         }
 
@@ -38,7 +38,7 @@
 
         private bool IsFizz(int number)
         {
-            if (number % 4 == 0)
+            if (number % 3 == 0)
             {
                 return true;
             }
@@ -47,7 +47,7 @@
 
         private bool IsBuzz(int number)
         {
-            if (number % 7 == 0)
+            if (number % 4 == 0)
             {
                 return true;
             }
