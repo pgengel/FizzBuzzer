@@ -1,38 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FizzBuzzer
+﻿namespace FizzBuzzer
 {
-    class FizzBuzzerSimple
+    public class FizzBuzzerSimple
     {
-        public void FizzBuzz(int number)
+        public string FizzBuzz(int number)
         {
             if (InRange(number))
             {
                 if (IsFizzBuzz(number))
                 {
-                    Console.WriteLine("FizzBuzz");
+                    return "FizzBuzz";
                 }
-                else if (IsBuzz(number))
+                if (IsBuzz(number))
                 {
-                    Console.WriteLine("Buzz");
+                    return "Buzz";
                 }
-                else if (IsFizz(number))
+                if (IsFizz(number))
                 {
-                    Console.WriteLine("Fizz");
+                    return "Fizz";
                 }
-                else
-                {
-                    Console.WriteLine(number);
-                }     
+
+                return number.ToString();
             }
-            else
-            {
-                Console.WriteLine("Error");
-            }
+
+            return "Error";
+
         }
 
         private bool InRange(int number)
