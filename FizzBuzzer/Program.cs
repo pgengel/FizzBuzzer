@@ -10,6 +10,7 @@ namespace FizzBuzzer
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
