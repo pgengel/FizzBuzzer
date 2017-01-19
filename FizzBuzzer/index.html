@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <script type="text/javascript">
+        //basic object
+        var customer = {
+            name: "Tom Smith",
+            speak : function(){
+                return "my name is " + this.name;
+            },
+
+            //object within an object
+            address : {
+                street : "123",
+                city : "Durban",
+            }
+        };
+
+        document.write(customer.speak() + "<br />")
+    </script>
+</body>
+</html>
