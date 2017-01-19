@@ -8,7 +8,7 @@
 <body>
 
     <script type="text/javascript">
-        //basic object
+        //1. basic object - cannot make multiple instances of it.
         var customer = {
             name: "Tom Smith",
             speak : function(){
@@ -18,11 +18,238 @@
             //object within an object
             address : {
                 street : "123",
-                city : "Durban",
+                city : "Durban"
             }
         };
 
-        document.write(customer.speak() + "<br />");
+        //1.1 refer in object in objects
+        document.write(customer.speak() + "<br /> live in " + customer.address.city);
+
+        //1.2 adding a new properties in objects
+        customer.address.country = " RSA";
+        document.write(customer.address.country);
+
+        //2. if you want to create multiple instances of an object. Then you use a constructor function.
+        function Person(name, street) {
+            //properties
+            this.name = name;
+            this.street = street;
+            this.country = "RSA";
+
+            //methods
+            this.info = function() {
+                return "My name is " + this.name + " and live at " + this.street + " " + this.country;
+            }
+        }
+
+        // I need to refer to this object and make an instance of it
+        var bobSmith = new Person("Bob Smith", "Jean");
+        document.write(bobSmith.name + "lives in " + bobSmith.country + " or " + bobSmith.info() + "</br>");// do not forget the "()" at bobSmith.info()
+
+        //2.1 check the type of an object is of an certain type
+        document.write("Bob is a person = " + (bobSmith instanceof Person) + "</br>");
+
+        //2.2 change a property in an object using a function
+        function changeName(person) {
+            person.name = "Sue Smith";
+        }
+
+        changeName(bobSmith);
+
+        document.write("Bob has become " + bobSmith.name + "</br>");
+
+        //2.3 Check if two objects are the same
+        var person1 = new Person("Paul", "123Do");
+        var person2 = new Person("Paul", "123Do");
+
+        //document.write("Are they equal "(person1 == person2));//does not work
+
+        //3. Prototypes - Every function contains a prototype property that is going to contain an object, which is going to allow you to add properties and methods.
+        function getSum(num1, num2) {
+            return num1 + num2;
+        }
+
+        // Get the number of args
+        document.write(getSum.length + "</br>");
+
+        //3.1 add property and a function to the object
+        function Mammel(name) {
+            this.name = name;
+            this.getInfo = function() {
+                return "The mammel name is " + this.name + "</br>";
+            }
+        }
+
+        Mammel.prototype.sound = "Grrrr";
+        Mammel.prototype.makeSound = function() {
+            return this.name + " says " + this.sound + "</br>";
+        };
+
+        var grover = new Mammel("Dylan");
+
+        document.write(grover.makeSound() + "</br>");
+
+        // 3.2 Get the different properties
+        for(var prop in grover) {
+            document.write(prop + " : " + grover[prop] + "</br>");
+        }
+
+        // 3.3 check of the property is part of the protoype or the object it self.
+        document.write("name is of prop of grover: " + grover.hasOwnProperty("name") + "</br>");
+        document.write("name is of prop of grover: " + grover.hasOwnProperty("sound") + "</br>");
+
+        //// 3.4 add functions to javascript build in functions
+        //Array.prototype.Int16Array = function() {
+
+        //};
+
+        //3.5 make properties private by declaring them variables inside of the constructor.
+        function SecretCode() {
+
+            var secretProp = 78; //this is a private prop.
+            var secretMethod = function() { //this is private method
+                return "secret method </br>";
+            }
+
+            this.getProp = function() { //this is public
+                return secretProp + "</br>";
+            }
+
+            this.getMethod = function() { //this is public
+                return secretMethod() + "</br>";
+            }
+        }
+
+        var secret = new SecretCode(); 
+
+        document.write(secret.getProp());
+        document.write(secret.getMethod());
+
+        //4. getters and setters
+        var address = {
+            street: "No street",
+            city: "No city",
+
+            get getAddress() {
+                return this.street + ", " + this.city;
+            },
+
+            set setAddress(theAddress) {
+                var parts = theAddress.toString().split(",");
+                this.street = parts[0] || "";
+                this.city = parts[1] || "";
+            }
+        }
+
+        address.setAddress = "123 main st, PA";
+        document.write("Address : " + address.getAddress + "</br>");
+
+        // ---------- CONSTRUCTOR GETTERS AND SETTERS ----------
+        // Still used even though it is (Deprecated)
+        function Coordinates() {
+            this.latitude = 0.0;
+            this.longitude = 0.0;
+        }
+
+        // Define the getter with the prototype to assign it to with
+        // the property name and the getter function
+        Object.__defineGetter__.call(Coordinates.prototype, "getCoords", function () {
+            return "Lat : " + this.latitude + " Long: " + this.longitude;
+        });
+
+        // Define the setter with the prototype to assign it to with
+        // the property name and the setter function
+        Object.__defineSetter__.call(Coordinates.prototype, "setCoords", function (coords) {
+            var parts = coords.toString().split(", ");
+            this.latitude = parts[0] || '';
+            this.longitude = parts[1] || '';
+        });
+
+        var testCoords = new Coordinates();
+
+        testCoords.setCoords = "40.71, 74.00";
+
+        document.write("Coordinates : " + testCoords.getCoords + "<br />");
+
+        // ---------- GETTERS AND SETTERS WITH DEFINEPROPERTY ----------
+        function Point() {
+            this.xPos = 0;
+            this.yPos = 0;
+        }
+
+        // Use defineProperty to set getters and setters
+        // Pass the prototype to attach to along with the property name
+        // and define the functions to associate with get and set
+        Object.defineProperty(Point.prototype, "pointPos", {
+            get: function () {
+                return "X: " + this.xPos + " Y: " + this.yPos;
+            },
+            set: function (thePoint) {
+                var parts = thePoint.toString().split(", ");
+                this.xPos = parts[0] || '';
+                this.yPos = parts[1] || '';
+            }
+        });
+
+        var aPoint = new Point();
+
+        aPoint.pointPos = "100, 200";
+
+        document.write("Point Position : " + aPoint.pointPos + "<br />");
+
+        // ---------- ECMASCRIPT 5.1 GETTERS AND SETTERS Constructor Function Getters / Setters ----------
+
+        var Circle = function (radius) {
+            this._radius = radius;
+        };
+
+        Circle.prototype = {
+            set radius(radius) { this._radius = radius; },
+            get radius() { return this._radius; },
+            get area() { return Math.PI * (this._radius * this._radius); }
+        };
+        var circ = new Circle(10);
+
+        circ.radius = 15;
+
+        document.write("A circle with radius " + circ.radius + " has an area of " + circ.area.toFixed(2) + "<br />");
+
+        //5 Inheritance - need to understand how prototype works.
+        // ---------- INHERITANCE ----------
+        // When we ask for a property if it isn't found in the main object
+        // then it is searched for in the prototype object. We are able
+        // to inherit methods and variables from any object in a
+        // chain of objects.
+
+        function Animal() {
+            this.name = "Animal";
+
+            this.toString();
+        }
+
+        // ---------- INTERMEDIATE FUNCTION INHERITANCE ----------
+        function extend(Child, Parent) {
+            var Temp = function () { };
+
+            Temp.prototype = Parent.prototype;
+
+            Child.prototype = new Temp();
+
+            Child.prototype.constructor = Child;
+
+        }
+
+        function Deer() {
+            this.name = "Deer";
+            this.sound = "Snort";
+        }
+
+        extend(Deer, Animal);
+
+        var elk = new Deer();
+
+        document.write(elk.getSound() + "<br />");
+
     </script>
 </body>
 </html>
