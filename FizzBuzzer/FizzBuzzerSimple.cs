@@ -19,7 +19,7 @@
                     return "Fizz";
                 }
 
-                return number.ToString();
+                return ConvertIntToStr(number);
             }
 
             return "The number is out of range";
@@ -47,7 +47,7 @@
 
         private bool IsBuzz(int number)
         {
-            if (number % 4 == 0)
+            if (number % 5 == 0)
             {
                 return true;
             }
@@ -61,6 +61,11 @@
                 return true;
             }
             return false;
+        }
+
+        private string ConvertIntToStr(int number)
+        {
+            return number.ToString();
         }
     }
 }

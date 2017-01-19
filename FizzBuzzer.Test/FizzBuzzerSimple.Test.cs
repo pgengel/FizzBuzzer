@@ -40,6 +40,19 @@ namespace FizzBuzzer.Test
             Assert.AreEqual(expected, actual);
         }
 
+        [TestCase(4, "4")]
+        public void FizzBuzzer_GivenBuzzNumber_ShouldReturnNumber(int number, string expected)
+        {
+            //arrange
+            //var fb = new FizzBuzzerSimple();
+
+            //act
+            var actual = _fb.FizzBuzz(number);
+
+            //assert
+            Assert.AreEqual(expected, actual);
+        }
+
         [TestCase(15, "Buzz")]
         public void FizzBuzzer_GivenFizzBuzzNumber_ShouldReturnFizzBuzz(int number, string expected)
         {
