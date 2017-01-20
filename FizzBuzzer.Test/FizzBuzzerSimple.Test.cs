@@ -10,7 +10,7 @@ namespace FizzBuzzer.Test
         [SetUp]
         protected void SetUp()
         {
-            _fb = new FizzBuzzerSimple();
+            _fb = new FizzBuzzerSimple(new ConsoleWriter.ConsoleWriter(), "", null);
 
         }
 

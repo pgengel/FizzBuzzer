@@ -28,8 +28,10 @@ namespace ConsoleWriter
             _args = args;
         }
 
-        public Writer()
+        public Writer(string format, object[] args)
         {
+            _format = format;
+            _args = args;
         }
 
         public void ConsoleWrite(IConsoleWriter consoleWriter)

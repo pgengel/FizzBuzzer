@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FizzBuzzer
+﻿namespace FizzBuzzer
 {
     class Program
     {
         static void Main(string[] args)
         {
+            FizzBuzzerSimple fb = new FizzBuzzerSimple(new ConsoleWriter.ConsoleWriter(), "", null);
 
         }
     }

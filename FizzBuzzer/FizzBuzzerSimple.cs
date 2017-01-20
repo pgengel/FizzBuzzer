@@ -9,9 +9,6 @@ namespace FizzBuzzer
         {
         }
 
-        public FizzBuzzerSimple() : base()
-        {
-        }
 
         public string FizzBuzz(int number)
         {
