@@ -227,7 +227,7 @@
             this.toString();
         }
 
-        // ---------- INTERMEDIATE FUNCTION INHERITANCE ----------
+        // 5.1 ---------- INTERMEDIATE FUNCTION INHERITANCE ----------
         function extend(Child, Parent) {
             var Temp = function () { };
 
@@ -248,7 +248,169 @@
 
         var elk = new Deer();
 
-        document.write(elk.getSound() + "<br />");
+        document.write(elk.sound + "<br />");
+        
+
+        //6 Calling parent functions
+        function Vehicle(name) {
+            this.name = name;
+        }
+
+        Vehicle.prototype = {
+            drive: function() {
+                return this.name + " drives forward";
+            },
+            stop: function() {
+                return this.name + " drives stops";
+            }
+        }
+
+        function Truck(name) {
+            this.name = name;
+        }
+
+        //inherant the vehicle method
+        Truck.prototype = new Vehicle();
+
+        //move the constructor
+        Truck.prototype.constructor = Truck;
+
+        //override the drive parent method
+        Truck.prototype.drive = function() {
+            var driveMsg = Vehicle.prototype.drive.apply(this);
+            return driveMsg += " through a field";
+        }
+
+        Truck.prototype.stop = function() {
+            return "BIG stop <br />";
+        }
+
+        var jeep = new Truck("Jeep");
+        jeep.drive();
+
+        document.write(jeep.stop());
+
+        //design patterns
+        //singleton
+        function Hero(name) {
+            if (typeof Hero.instance == 'object') {
+                return Hero.instance;
+            }
+
+            this.name = name;
+            Hero.instance = this;
+            return this;
+        }
+
+        var derekHero = new Hero("Derek");
+        var derekHero = new Hero("Pete");
+
+        document.write(derekHero.name + "<br />");
+
+        //factory pattern
+
+        function Sword(desc) {
+            this.weaponType = "sword";
+            this.metal = desc.metal || "Steel";
+            this.style = desc.style || "longsword";
+            this.hasMagic = desc.hasMagic || false;
+        }
+
+        function Bow(desc) {
+            this.weaponType = "bow";
+            this.metarial = desc.metarial || "Wood";
+            this.style = desc.style || "longbow";
+            this.hasMagic = desc.hasMagic || false;
+        }
+
+
+        function  WeaponFactory() {
+            
+        }
+
+        WeaponFactory.prototype.makeWeapon = function(desc) {
+
+            var weaponClass = null;
+
+            if (desc.weaponType === "sword") {
+                return weaponClass = Sword;
+            } else if (desc.weaponType === "bow") {
+                return weaponClass = Bow;
+            } else {
+                false;
+            }
+
+            return new weaponClass(desc);
+        }
+
+        var myWeaponFact = new WeaponFactory();
+
+        var bladeFist = myWeaponFact.makeWeapon({
+            weaponType: "sword",
+            matel: "Iron",
+            style: "Scythe",
+            hasMagic: true
+        });
+
+        //decorator pattern
+        function Pizza(price) {
+            this.price = price || 10;
+
+        }
+
+        Pizza.prototype.getPrice = function() {
+            return this.price;
+        }
+
+        function ExtraCheese(pizza) {
+            var prevPrice = pizza.price;
+            pizza.price = prevPrice + 1;
+        }
+
+        var pizza = new Pizza();
+
+        ExtraCheese(pizza);
+
+        document.write("Pizza price with cheese " + pizza.price + "<br />");
+
+        //observables
+        var Observable = function() {
+            this.subscribers = [];
+        }
+
+        Observable.prototype = {
+            subscribe: function(subscriber) {
+                this.subscribers.push(subscriber);
+            },
+
+            unsubscribe: function(unsubscriber) {
+                for (var i = 0; i < subscribers.length; i++) {
+                    if (this.subscribe === unsubscriber) {
+                        this.subscribers.splice(i, 1);
+                    }
+
+                    return unsubscriber.name;
+                }
+            },
+
+            publish: function(data) {
+                for (var i = 0; i < this.subscribers.length; i++) {
+                    this.subscribers[i].recieveData(data);
+                }
+            }
+        };
+
+        var Boldman = {
+            name: "Boldman",
+            recieveData : function(data) {
+                document.write(this.name + data);
+            }
+        }
+
+        observable = new Observable();
+
+        observable.subscribe(Boldman);
+        observable.publish("IBM");
 
     </script>
 </body>
