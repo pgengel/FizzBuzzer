@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FizzBuzzer
+namespace ConsoleWriter
 {
 
 
@@ -17,12 +17,25 @@ namespace FizzBuzzer
 
     public class Writer : IWriter
     {
+        public readonly IConsoleWriter consoleWriter;
+        readonly string _format;
+        readonly object[] _args;
+
+        public Writer(IConsoleWriter consoleWriter, string format, object[] args)
+        {
+            this.consoleWriter = consoleWriter;
+            _format = format;
+            _args = args;
+        }
+
+        public Writer()
+        {
+        }
 
         public void ConsoleWrite(IConsoleWriter consoleWriter)
         {
-            //_consoleWriter.WriteLine();
+            consoleWriter.WriteLine(_format, _args);
         }
-
     }
 
     public class ConsoleWriter : IConsoleWriter
