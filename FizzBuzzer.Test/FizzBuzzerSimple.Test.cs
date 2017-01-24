@@ -10,7 +10,7 @@ namespace FizzBuzzer.Test
         [SetUp]
         protected void SetUp()
         {
-            _fb = new FizzBuzzerSimple(new ConsoleWriter.ConsoleWriter(), "", null);
+            _fb = new FizzBuzzerSimple();
 
         }
 
@@ -53,7 +53,7 @@ namespace FizzBuzzer.Test
             Assert.AreEqual(expected, actual);
         }
 
-        [TestCase(15, "Buzz")]
+        [TestCase(15, "FizzBuzz")]
         public void FizzBuzzer_GivenFizzBuzzNumber_ShouldReturnFizzBuzz(int number, string expected)
         {
             //arrange

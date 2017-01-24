@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace ConsoleWriter
+namespace ConsoleWriters
 {
-
 
     public interface IWriter
     {
@@ -17,16 +16,10 @@ namespace ConsoleWriter
 
     public class Writer : IWriter
     {
-        public readonly IConsoleWriter consoleWriter;
-        readonly string _format;
-        readonly object[] _args;
+        private IConsoleWriter _consoleWriter;
 
-        public Writer(IConsoleWriter consoleWriter, string format, object[] args)
-        {
-            this.consoleWriter = consoleWriter;
-            _format = format;
-            _args = args;
-        }
+        private string _format;
+        private object[] _args;
 
         public Writer(string format, object[] args)
         {
@@ -36,7 +29,8 @@ namespace ConsoleWriter
 
         public void ConsoleWrite(IConsoleWriter consoleWriter)
         {
-            consoleWriter.WriteLine(_format, _args);
+            this._consoleWriter = consoleWriter;
+            this._consoleWriter.WriteLine(_format, _args);
         }
     }
 

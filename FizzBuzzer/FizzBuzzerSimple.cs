@@ -1,38 +1,44 @@
 ﻿
-using ConsoleWriter;
+
+using ConsoleWriters;
 
 namespace FizzBuzzer
 {
-    public class FizzBuzzerSimple : Writer
+    public class FizzBuzzerSimple : ConsoleWriter
     {
-        public FizzBuzzerSimple(IConsoleWriter consoleWriter, string format, object[] args) : base(consoleWriter, format, args)
-        {
-        }
 
 
         public string FizzBuzz(int number)
         {
+
             if (InRange(number))
             {
                 if (IsFizzBuzz(number))
                 {
-                    consoleWriter.WriteLine("FizzBuzz", null);
+                    Write("FizzBuzz", null);
+
+                    //consoleWriter.WriteLine("FizzBuzz", null);
                     return "FizzBuzz";
                 }
                 if (IsBuzz(number))
                 {
-                    consoleWriter.WriteLine("Buzz", null);
+                    Write("Buzz", null);
+                    //consoleWriter.WriteLine("Buzz", null);
                     return "Buzz";
                 }
                 if (IsFizz(number))
                 {
-                    consoleWriter.WriteLine("Fizz", null);
+                    Write("Fizz", null);
+                    //consoleWriter.WriteLine("Fizz", null);
                     return "Fizz";
                 }
 
-                consoleWriter.WriteLine(ConvertIntToStr(number), null);
+                Write(ConvertIntToStr(number), null);
+                // consoleWriter.WriteLine(ConvertIntToStr(number), null);
                 return ConvertIntToStr(number);
             }
+
+            Write("The number is out of range", null);
 
             return "The number is out of range";
 
