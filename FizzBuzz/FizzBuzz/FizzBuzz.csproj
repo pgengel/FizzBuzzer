@@ -59,5 +59,10 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="index.html" />
+    <Content Include="JavaScript.js" />
+    <Content Include="sql\pr_templateStoreProc.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
