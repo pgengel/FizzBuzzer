@@ -25,11 +25,13 @@
     };
 
     var getAddress = function () {
+        console.log("Getting address");
         return privateDetails.address;
     };
 
     var setAddress = function (address) {
         privateDetails.address = address;
+        getAddress();
     };
 
     var getFive = function () {
@@ -44,10 +46,29 @@
         setSurname: setSurname,
         getSurname: getSurname,
         publicDetails: publicDetails,
-        getAddress: getAddress,
         setAddress, setAddress,
         getFive: getFive,
         setFive: setFive
     }
 
 })("Pieter");
+
+var Zone = {
+    run: function (callback) {
+        if (this.beforeTask) {
+            this.beforeTask();
+        }
+
+        //console.log("BEFORE");
+        callback();
+        //console.log("AFTER");
+
+        if (this.afterTask) {
+            this.afterTask();
+        }
+    }
+}
+Zone.beforeTask = () => { console.log("BEFORE TASK"); }
+Zone.afterTask = () => { console.log("AFTER TASK"); }
+Zone.run(() => { console.log("Hallo World"); });
+Person.setAddress("BOOM!!!");

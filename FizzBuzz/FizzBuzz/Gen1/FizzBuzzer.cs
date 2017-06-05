@@ -52,7 +52,12 @@ namespace FizzBuzz.Gen1
 				return "Buzz";
 			}
 
-			_consoleWriter.Write(number.ToString());
+			_consoleWriter.Write(ConvertIntToString(number));
+			return number.ToString();
+		}
+
+		private static string ConvertIntToString(int number)
+		{
 			return number.ToString();
 		}
 	}
