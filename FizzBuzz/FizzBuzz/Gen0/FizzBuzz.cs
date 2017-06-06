@@ -14,14 +14,23 @@ namespace FizzBuzzApp
 		{
 			Validate(ref number);
 
-			if (number % CONSTANT.DIV_BY_THREE == CONSTANT.ZERO_RES && number % CONSTANT.DIV_BY_FIVE == CONSTANT.ZERO_RES)
+			if (IsFizz(ref number) && IsBuzz(ref number))
 				return "FizzBuzz";
-			if (number % CONSTANT.DIV_BY_THREE == CONSTANT.ZERO_RES)
+			if (IsFizz(ref number))
 				return "Fizz";
-			if (number % CONSTANT.DIV_BY_FIVE == CONSTANT.ZERO_RES)
+			if (IsBuzz(ref number))
 				return "Buzz";
 			return ConvertToString(number);
+		}
 
+		private static bool IsBuzz(ref int number)
+		{
+			return number % CONSTANT.DIV_BY_FIVE == CONSTANT.ZERO_RES;
+		}
+
+		private static bool IsFizz(ref int number)
+		{
+			return number % CONSTANT.DIV_BY_THREE == CONSTANT.ZERO_RES;
 		}
 
 		private static string ConvertToString(int number)

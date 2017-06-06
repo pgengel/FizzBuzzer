@@ -23,6 +23,7 @@ namespace FizzBuzz.Gen1
 		{
 
 		}
+		//it is returning a string just for unit testing purposes.
 		public string Print(int number, IConsoleWriter consoleWriter)
 		{
 			this._consoleWriter = consoleWriter;
@@ -36,27 +37,27 @@ namespace FizzBuzz.Gen1
 
 			if (_validateFizz.IsFizz(number) && _validateBuzz.IsBuzz(number))
 			{
-				_consoleWriter.Write("FizzBuzz");
+				_consoleWriter.WriteLn("{0}", "FizzBuzz");
 				return "FizzBuzz";
 			}
 
 			if (_validateFizz.IsFizz(number))
 			{
-				_consoleWriter.Write("Fizz");
+				_consoleWriter.WriteLn("{0}", "Fizz");
 				return "Fizz";
 			}
 
 			if (_validateBuzz.IsBuzz(number))
 			{
-				_consoleWriter.Write("Buzz");
+				_consoleWriter.WriteLn("{0}", "Buzz");
 				return "Buzz";
 			}
 
-			_consoleWriter.Write(ConvertIntToString(number));
-			return number.ToString();
+			_consoleWriter.WriteLn(ConvertIntToString(ref number));
+			return ConvertIntToString(ref number);
 		}
 
-		private static string ConvertIntToString(int number)
+		private static string ConvertIntToString(ref int number)
 		{
 			return number.ToString();
 		}

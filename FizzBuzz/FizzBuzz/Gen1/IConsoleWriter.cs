@@ -2,6 +2,7 @@
 {
 	public interface IConsoleWriter
 	{
-		void Write(string text);
+		void WriteLn(string text, params object[] arg);
+		void Write(string format, params object[] arg);
 	}
 }

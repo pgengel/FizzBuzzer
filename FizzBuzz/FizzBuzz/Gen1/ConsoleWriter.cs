@@ -8,9 +8,14 @@ namespace FizzBuzz.Gen1
 {
 	public class ConsoleWriter : IConsoleWriter
 	{
-		public void Write(string text)
+		public void WriteLn(string format, params object[] arg)
 		{
-			Console.WriteLine(text);
+			Console.WriteLine(format, arg);
+		}
+
+		public void Write(string format, params object[] arg)
+		{
+			Console.Write(format, arg);
 		}
 	}
 }

@@ -11,16 +11,17 @@ namespace FizzBuzzApp
     {
         static void Main(string[] args)
         {
-            //FizzBuzz fb = new FizzBuzz();
-            //for (int i = 1; i <= 100; i++)
-            //{
-            //    Console.WriteLine(fb.FizzBuzzer(i));
-            //}
-            //Console.ReadLine();
-			IFizzBuzzer fizzBuzzer = new global::FizzBuzz.Gen1.FizzBuzzer(new ValidateFizz(), new ValidateBuzz());
+			FizzBuzz Q1 = new FizzBuzz();
 			for (int i = 1; i <= 100; i++)
 			{
-				fizzBuzzer.Print(i, new ConsoleWriter());
+				Console.WriteLine(Q1.FizzBuzzer(i));
+			}
+			Console.ReadLine();
+
+			IFizzBuzzer Q4 = new global::FizzBuzz.Gen1.FizzBuzzer(new ValidateFizz(), new ValidateBuzz());
+			for (int i = 1; i <= 100; i++)
+			{
+				Q4.Print(i, new ConsoleWriter());
 			}
 			Console.ReadLine();
 		}
