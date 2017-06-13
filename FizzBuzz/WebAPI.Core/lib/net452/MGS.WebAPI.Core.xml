@@ -1,0 +1,2325 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MGS.WebAPI.Core</name>
+    </assembly>
+    <members>
+        <member name="T:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute">
+            <summary>
+              An action filter which will frame the execution of an action on a controller and log a metric with Success|Failure and Timing. The filter will attempt to include 
+              contextual information about the caller (calling application and operator details) and product which is the target of the call. The caller information will be 
+              harvested from the supplied token and the product information from the Request via the extension method GetProductContext(). The Request is typically populated 
+              with the contextual product detail via the ProductResolver action filter so you should ensure that this is in use or populate Request.SetProductContext yourself.
+            
+              The metric logged will have the form:
+            
+              {prefix}.{Caller}.{OperatorName.{OperatorId}.{ProductName}.{ProductId}.{GamingServerName}.{GamingServerId}.{Category}.{Action}.{ServerName}.Success|Failure
+            
+              {prefix} is what is typically already set up by the application in the MGS.Metrics library, e.g. api.Account
+              
+              If the action succeeds (doesn't throw an exception) a LogCount() with Success is logged and a LogTiming() with the execution time.
+              If the action fails (throws an exception) then a LogCount() with Failure is logged, as long as the exception is not suppressed (no timing is logged in this case).
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute.#ctor(System.String)">
+            <summary>
+              Creates an instance with the supplied parameters, using the default category "Method".
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute.#ctor(System.String,System.String)">
+            <summary>
+              Creates an instance with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+              Captures the start time for the metric.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute.OnActionExecuted(System.Web.Http.Filters.HttpActionExecutedContext)">
+            <summary>
+              Logs the sucess/failure and timing after the action has executed.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute.Category">
+            <summary>
+              The Category under which the metric will be logged.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute.Action">
+            <summary>
+              The Action which will be logged for this metric.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute.IncludeCallerDetails">
+            <summary>
+              Whether to include {Caller} segement. Defaults to true.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute.IncludeOperatorDetails">
+            <summary>
+              Whether to include {OperatorName.{OperatorId} segements. Defaults to true.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.ActionFilters.ActionMetricAttribute.IncludeProductDetails">
+            <summary>
+              Whether to include {ProductName}.{ProductId}.{GamingServerName}.{GamingServerId} segements. Defaults to true.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.ActionFilters.ValidateModelAttribute">
+            <summary>
+              Validates the model by examining any model state errors and throwing applicable ValidationException(s). 
+            </summary>
+            <remarks>
+              In time, this could be extended to capture bespoke errors with method parameters which can't easily be caught by normal model validation. An example would be a completely 
+              empty post-body which results is a null object supplied to the method.
+            </remarks>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.ValidateModelAttribute.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            
+            </summary>
+            <param name="actionContext"></param>
+        </member>
+        <member name="T:MGS.WebAPI.Core.ActionFilters.WebApiInitialisationFilter">
+            <summary>
+              Filter redirects actions to a not initialised page if the api is not ready yet.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.WebApiInitialisationFilter.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+              OnActionExecuting
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.ActionFilters.MvcInitialisationFilter">
+            <summary>
+              Filter redirects actions to a not initialised page if the api is not ready yet.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.MvcInitialisationFilter.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
+            <summary>
+            Executed by the MVC pipeline
+            </summary>
+            <param name="filterContext"></param>
+        </member>
+        <member name="T:MGS.WebAPI.Core.ActionFilters.RequiredActionParameters">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.RequiredActionParameters.#ctor(System.String)">
+            <summary>
+            Enforces that the parameters must not be null.
+            Returns a 400 Bad Request with an <see cref="T:MGS.WebAPI.Core.Errors.ErrorResponse"/> body detailing which parameters were null
+            </summary>
+            <param name="parameters">Comma delimited list of parameters to check for null on.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.RequiredActionParameters.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            
+            </summary>
+            <param name="actionContext"></param>
+        </member>
+        <member name="P:MGS.WebAPI.Core.ActionFilters.RequiredActionParameters.Parameters">
+            <summary>
+            Comma delimited list of parameters to check for null on.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.ActionFilters.ValidateModelStateAttribute">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ActionFilters.ValidateModelStateAttribute.OnActionExecuting(System.Web.Http.Controllers.HttpActionContext)">
+            <summary>
+            
+            </summary>
+            <param name="actionContext"></param>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Auditing.AuditData">
+            <summary>
+            Auditing Data
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Auditing.AuditData.OperatorId">
+            <summary>
+            The operator id.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Auditing.AuditData.User">
+            <summary>
+            The username of the user that actioned the change.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Auditing.AuditData.Reason">
+            <summary>
+            A reason for the change.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Auditing.AuditData.ApplicationName">
+            <summary>
+            The name of the Application.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Auditing.AuditData.OperatorName">
+            <summary>
+            The Operator Name.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Converters.IsoCalendarDateConverter">
+            <summary>
+            This class is a JSON.NET property converter which presents DateTime instances in <a href="http://en.wikipedia.org/wiki/ISO_8601#Calendar_dates">ISO 8601 Calendar Date format</a>.
+            </summary>
+            <remarks>This converter is very useful for DateTime scenarios where only the date compoenent is relevant, e.g. DateOfBirth.</remarks>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Converters.IsoCalendarDateConverter.#ctor">
+            <summary>
+            Creates a CalendarDateConverter
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Converters.IsoTimeSpanConverter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Converters.IsoTimeSpanConverter.WriteJson(Newtonsoft.Json.JsonWriter,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            
+            </summary>
+            <param name="writer"></param>
+            <param name="value"></param>
+            <param name="serializer"></param>
+            <remarks>
+            It is kind of odd to have XmlConvert for Json but it handles the ISO format for duration
+            http://stackoverflow.com/questions/12633588/parsing-iso-duration-with-json-net
+            https://en.wikipedia.org/wiki/ISO_8601#Durations
+            </remarks>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Converters.IsoTimeSpanConverter.ReadJson(Newtonsoft.Json.JsonReader,System.Type,System.Object,Newtonsoft.Json.JsonSerializer)">
+            <summary>
+            
+            </summary>
+            <param name="reader"></param>
+            <param name="objectType"></param>
+            <param name="existingValue"></param>
+            <param name="serializer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Converters.IsoTimeSpanConverter.CanConvert(System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="objectType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Diagnostics.ProductIdAttribute">
+            <summary>
+              Attribute which can be used to designate an integer property of a model as the one which identifies the ProductId. You would typically use this if you have model which uses a 
+              non-standard name for ProductId. It will be used by the ProductResolver action filter which sets up the product information for use by logging and metrics. If you're using one 
+              of the standard names for ProductId then you don't need to use this as the resolver will detect the it automatically. 
+            
+              The currently detected standard names are: "ProductId, SessionProductId, RegisteredProductId".
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.BaseErrorRedactor">
+            <summary>
+              A simple implementation of IErrorRedactor. 
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.IErrorRedactor">
+            <summary>
+              A means to sanitise objects which might contain sensitive information such as Email addresses, passwords, etc.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.IErrorRedactor.Redact(System.Object)">
+            <summary>
+              Redacts the information in the supplied value, returning a sanitised object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorRedactor.SetupRedactor``1(System.Func{``0,System.Object})">
+            <summary>
+              Setup the redactor function for a particular type.
+            </summary>
+            <param name="func">The function which will do the redaction.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorRedactor.Redact(System.Object)">
+            <summary>
+              Redacts the information in the supplied type, returning a sanitised object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.GlobalExceptionLogger">
+            <summary>
+              The stock global exception logger provided by the base library. Logs using the facilities of MGS.Logging.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.GlobalExceptionLogger.#ctor(System.String,MGS.WebAPI.Core.Errors.IErrorCodeResolution,MGS.WebAPI.Core.Errors.IErrorSuppression,MGS.WebAPI.Core.Errors.IErrorRedactor)">
+            <summary>
+              Creates a GlobalExceptionLogger.
+            </summary>
+            <param name="applicationName">The name of the trace source defined in the application configuration file, for use with MGS.Logging.</param>
+            <param name="errorCodeResolution">The means to decide what error code is chosen for an exception.</param>
+            <param name="errorSuppression">The means to decide whether a particular exception should be suppressed or not.</param>
+            <param name="errorRedactor">The means to redact sensitive values which should not be logged.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.GlobalExceptionLogger.#ctor(MGS.Logging.ILogger,MGS.WebAPI.Core.Errors.IErrorCodeResolution,MGS.WebAPI.Core.Errors.IErrorSuppression,MGS.WebAPI.Core.Errors.IErrorRedactor)">
+            <summary>
+              Creates a GlobalExceptionLogger.
+            </summary>
+            <param name="logger">The means to log messages.</param>
+            <param name="errorCodeResolution">The means to decide what error code is chosen for an exception.</param>
+            <param name="errorSuppression">The means to decide whether a particular exception should be suppressed or not.</param>
+            <param name="errorRedactor">The means to redact sensitive values which should not be logged.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.GlobalExceptionLogger.Log(System.Web.Http.ExceptionHandling.ExceptionLoggerContext)">
+            <summary>
+              Log the error to the logging devices set up for the application.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.UncertaintyTracker">
+            <summary>
+              Helper class which works with the GlobalExceptionHandler to force a propagating exception to be treated as one for which the associated error response is an uncertain outcome. 
+            </summary>
+            <remarks>
+              This is typically used as part of a multi-phase operation where, should the first part of the operation succeed but a latter part fail for deterministic reasons, the overall 
+              result must nonetheless be presented to the caller as of uncertain outcome. 
+            
+              For example, let's assume we are implementing an API call which needs to update a remote balance. This needs to perform the remote balance update (Step 1) and also do some updates on 
+              the local system (Step 2). Assume Step 1 succeeds but Step 2 fails with a deterministic error. We would normally present deterministic errors to the caller as such and the caller is 
+              within its rights to assume that no part of the operation has been successful. In this case however we can't allow that as only a portion of the operation has been successful so we 
+              must treat any failures, deterministic or not as "uncertain" and leave the caller in a position where it knows it needs to retry to be sure that the system has been brought back into
+              a coherent state.
+            </remarks>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.UncertaintyTracker.MustTreatAsUncertain(System.Exception)">
+            <summary>
+              Examines the provided exception and returns whether it should be treated as an uncertain outcome or not.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.UncertaintyTracker.Track(System.Action)">
+            <summary>
+              Track the provided action and force any exceptions to be treated as an error response which is uncertain.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.UncertaintyTracker.Track``1(System.Func{``0})">
+            <summary>
+              Track the provided function and force any exceptions to be treated as an error response which is uncertain.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.UncertaintyTracker.TrackAsync(System.Func{System.Threading.Tasks.Task})">
+            <summary>
+              Track the provided awaitable action and force any exceptions to be treated as an error response which is uncertain.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.UncertaintyTracker.TrackAsync``1(System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+              Track the provided awaitable function and force any exceptions to be treated as an error response which is uncertain.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Exceptions.BadRequestException">
+            <summary>
+              An specialisation of a BaseException which wants to be transformed into a BadRequest HTTP response.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Exceptions.BaseException">
+            <summary>
+              A Exception specialisation whcih accomodates an error code and further details.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BaseException.#ctor(System.Int32,System.String,System.String,System.Exception)">
+            <summary>
+              Creates a BaseException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BaseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+              Creates a BaseException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BaseException.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+              Creates a BaseException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BaseException.#ctor(System.Int32,System.String)">
+            <summary>
+              Creates a BaseException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BaseException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+              Creates a BaseException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BaseException.#ctor(System.Int32,System.Exception)">
+            <summary>
+              Creates a BaseException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BaseException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+              Serialization support.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Exceptions.BaseException.Code">
+            <summary>
+              The Code associated with this particular problem.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Exceptions.BaseException.Details">
+            <summary>
+              Further details of the problem, if any.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BadRequestException.#ctor(System.Int32,System.String,System.String,System.Exception)">
+            <summary>
+              Creates a BadRequestException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BadRequestException.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+              Creates a BadRequestException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BadRequestException.#ctor(System.Int32,System.String)">
+            <summary>
+              Creates a BadRequestException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BadRequestException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+              Creates a BadRequestException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.BadRequestException.#ctor(System.Int32,System.Exception)">
+            <summary>
+              Creates a BadRequestException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Diagnostics.CallerContext">
+            <summary>
+              A helper object which contains the essentials of the context for the API call. Very useful for metrics and the like.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Diagnostics.CallerContext.Application">
+            <summary>
+              The name of the calling application. Will be the subject for Service Tokens and the concatenated OperatorName and OperatorApplicationName for Operator Tokens.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Diagnostics.CallerContext.ProductType">
+            <summary>
+              The ProductType to which the calling application belongs, as defined in SystemConfiguration.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Diagnostics.CallerContext.Operator">
+            <summary>
+              The particulars of the Operator, if the caller is using an OperatorToken.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Diagnostics.CallerContext.Product">
+            <summary>
+              The particulars of the Product which is the target of the API call, if any.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Models.CoreSettings">
+            <summary>
+            Represents the Core Settings model used to configured MGS.WebAPI.Core
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.CoreSettings.SystemConfigurationRootUrl">
+            <summary>
+            SystemConfiguration api url.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.CoreSettings.CertPath">
+            <summary>
+            The certificate path.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.CoreSettings.SecurityIssuerList">
+            <summary>
+            List of allowed security issuers.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.CoreSettings.SecurityAudienceList">
+            <summary>
+            List of allowed security audiences.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.CoreSettings.ServiceTokenImmediateRetryDelayMilliseconds">
+            <summary>
+            The time between service token retries in milliseconds.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.CoreSettings.ApiKeyRootPath">
+            <summary>
+            The folder where api keys are kept.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.CoreSettings.ApiKeyRetryDelaySeconds">
+            <summary>
+            The time in second between Api Key retries in seconds.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.CoreSettings.ApiKeyMaxRetryCount">
+            <summary>
+            The number of times to retry getting a service key.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Diagnostics.Codes">
+            <summary>
+              Canonical list of Diagnostic Codes emitted from the WebAPI.Core library.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.GeneralException">
+            <summary>
+              A general, non-specific exception occurred.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.InvalidIdentity">
+            <summary>
+              The identity of the security principal was not a claims identify. This is serious and indicates a bug or mismatched versions.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.RequestValidationFailed">
+            <summary>
+              Model validation failed. This normally indicates a malformed request from a caller.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.RequestParameterMissing">
+            <summary>
+              A mandatory parameter was not supplied by a caller. See inner errors for details.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.FailedToInitialiseMetrics">
+            <summary>
+              An exception occurred when trying to initialise metrics.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.SqlGeneralError">
+            <summary>
+              A database error has occurred. Please see the error details for further information. If you require a specific error code for this scenario, please contact the Account Team and don't simply perform a regular pattern match against the error details as the wording could change!
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.SqlTimeoutError">
+            <summary>
+              Timeout calling the database. This could be because the database is very busy or that this query was blocked by others.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.SqlDeadlockError">
+            <summary>
+              Deadlock calling the database. If this occurs regularly then it's likely that the competing queries need to be optimised so that they don't interfere with one another as much.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.SqlLoginFailure">
+            <summary>
+              The application cannot login to a database. This is bad, and normally indicates an incorrectly configured password in SystemConfiguration.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.IsInitialising">
+            <summary>
+              Initialisation has not yet been completed. Please try again later.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.InitialisationFailed">
+            <summary>
+              Initialisation failed with errors.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.ModelValidationException">
+            <summary>
+              During model validation of user input, an exception occurred. This is typically because of badly formatted input which could not be bound to the expected data types.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.ModelValidationError">
+            <summary>
+              During model validation of user input, an error was detected. This is typically because required values were either not supplied, or possibly supplied but out of range or not bindable to their intended data types.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.ModelValidationMultipleErrors">
+            <summary>
+              Model validation encountered multiple issues. This is an outer error envelope to frame the collection. See the inner error detail for the specifics of the problems detected.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.TaskCanceled">
+            <summary>
+              Normally indicates a timeout of some kind, probably as a result of an HTTP call to another API.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.NotImplementedYet">
+            <summary>
+              This feature doesn't yet exist in the API, but it may well be there in a future release.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.XUserTokenHeaderMissing">
+            <summary>
+              The caller did not supply a custom HTTP header X-UserToken with the UserToken which identifies the session.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.XUserTokenValueMissing">
+            <summary>
+              The custom HTTP header X-UserToken is present but the value is null or whitespace, so the UserToken identifying the session is unknown.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.FailedtoGetProductInfoForMetrics">
+            <summary>
+              During the course of setting up metric details, an attempt to get info about a product from SystemConfiguration failed. This typically means a ProductId which doesn't exist in the system, or network issues trying to contect the SystemConfiguration API.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.FailedToResolveProduct">
+            <summary>
+              The attempt to resolve the Product details encountered an error. This could mean a ProductId which doesn't exist in the system, or network issues trying to contect the SystemConfiguration API.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.FailedToLogException">
+            <summary>
+              The attempt to log an exception itself encountered an exception. This almost certainly points to a code issue as this should be very defensive code.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.FailedToProcessActionMetric">
+            <summary>
+              An exception occurred when attempting to process a metric. This typically points to an issue with the suppression or error code resolution logic.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.FailedToRedactDetails">
+            <summary>
+              An exception occurred when attempting to redact information prior to logging it. This almost certainly points to a code issue as this should be very defensive code.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Diagnostics.Codes.FailedToLogMetric">
+            <summary>
+              An exception occurred when attempting to log a metric for a token validation failure. This points to an unusual or corrupt token which can't be handled by the metric logging code. 
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Diagnostics.CodeDescriptions">
+            <summary>
+              Provides detailed descriptions for diagnostic codes.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.CodeDescriptions.Get(System.Enum)">
+            <summary>
+              Get a description for the supplied diagnostic code.
+            </summary>
+            <param name="code">The diagnostic code to describe.</param>
+            <returns>A string containing details about the diagnostic code, or null if the code is not found.</returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Diagnostics.CodeClassification">
+            <summary>
+              Classifies diagnostic codes.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.CodeClassification.GetCriticalDiagnosticCodes">
+            <summary>
+              Returns a collection of critical diagnostic codes.
+            </summary>
+            <returns>The collection containing critical diagnostic codes.</returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.CodeClassification.GetSeriousDiagnosticCodes">
+            <summary>
+              Returns a collection of serious diagnostic codes.
+            </summary>
+            <returns>The collection containing serious diagnostic codes.</returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Diagnostics.DiagnosticCodeClassification">
+            <summary>
+              Provides some helper methods for classification of diagnostic codes.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.DiagnosticCodeClassification.#ctor">
+            <summary>
+              Initialises an instance of DiagnosticCodeClassification.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.DiagnosticCodeClassification.AddCriticalDiagnosticCode(System.Enum)">
+            <summary>
+              Adds a single critical diagnostic code.
+            </summary>
+            <param name="code">The code to add.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.DiagnosticCodeClassification.AddCriticalDiagnosticCodes(System.Collections.Generic.IEnumerable{System.Enum})">
+            <summary>
+              Adds a collection of critical diagnostic codes.
+            </summary>
+            <param name="codes">The codes to add.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.DiagnosticCodeClassification.AddSeriousDiagnosticCode(System.Enum)">
+            <summary>
+              Adds a single serious diagnostic code.
+            </summary>
+            <param name="code">The code to add.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.DiagnosticCodeClassification.AddSeriousDiagnosticCodes(System.Collections.Generic.IEnumerable{System.Enum})">
+            <summary>
+              Adds a collection of serious diagnostic codes.
+            </summary>
+            <param name="codes">The codes to add.</param>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Diagnostics.DiagnosticCodeClassification.CriticalDiagnosticCodes">
+            <summary>
+              Returns the set of critical diagnostic codes.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Diagnostics.DiagnosticCodeClassification.SeriousDiagnosticCodes">
+            <summary>
+              Returns the set of serious diagnostic codes.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.InitialisationError">
+            <summary>
+            Object describing error that occured during initialisation
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Errors.InitialisationError.Message">
+            <summary>
+            Message text of the error
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.BaseErrorCodeResolution">
+            <summary>
+              Base class to provide a framework and stock functionality for resolving error codes from common exceptions.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.IErrorCodeResolution">
+            <summary>
+              Interface through which error codes can be assigned for specific exceptions.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.IErrorCodeResolution.GetErrorCode(System.Exception)">
+            <summary>
+              Decide the error code for the provided exception.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorCodeResolution.GetErrorCode(System.Exception)">
+            <summary>
+              Decide the error code for the provided exception.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorCodeResolution.GetErrorCodeBaseException(MGS.WebAPI.Core.Exceptions.BaseException)">
+            <summary>
+              Provides stock, overridable functionality for resolving an error code from a BaseException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorCodeResolution.GetErrorCodeJwtBaseException(MGS.JWT.Exceptions.BaseException)">
+            <summary>
+              Provides stock, overridable functionality for resolving an error code from a JWT.Exceptions.BaseException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorCodeResolution.GetErrorCodeSqlException(System.Data.SqlClient.SqlException)">
+            <summary>
+              Provides stock, overridable functionality for resolving an error code from a BaseException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorCodeResolution.GetErrorCodeTaskCanceledException(System.Threading.Tasks.TaskCanceledException)">
+            <summary>
+              Provides stock, overridable functionality for resolving an error code from a TaskCanceledException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorCodeResolution.GetErrorCodeNotImplementedException(System.NotImplementedException)">
+            <summary>
+              Provides stock, overridable functionality for resolving an error code from a NotImplementedException.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection">
+            <summary>
+              Selects the appropriate ErrorResponse body for a given exception.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.IErrorResponseSelection">
+            <summary>
+              Interface through which callers can resolve exceptions into the appropriate HTTP response.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.IErrorResponseSelection.CreateErrorResponse(System.Exception,System.Nullable{System.Int32})">
+            <summary>
+              Creates an error response from the exception and error code information.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.IErrorResponseSelection.SelectHttpStatusCode(System.Exception,System.Int32)">
+            <summary>
+              Selects the appropriate HTTP status code from the exception and error code information.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.BriefSqlErrors">
+            <summary>
+              Whether to present SqlException errors with brief detail or not.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.ApplicationName">
+            <summary>
+              The name of the application in the error responses
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.ErrorCodeResolution">
+            <summary>
+              The means to derive an error code from an Exception
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.Descriptions">
+            <summary>
+              The dictionary to use to lookup descriptions for the error messages from the error codes
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.#ctor(MGS.WebAPI.Core.Errors.IErrorCodeResolution,System.String,System.Boolean)">
+            <summary>
+              Creates a BaseErrorResponseSelection
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.CreateErrorResponse(System.Exception,System.Nullable{System.Int32})">
+            <summary>
+              Creates an error response from the exception and error code information.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCode(System.Exception,System.Int32)">
+            <summary>
+              Selects the appropriate HTTP status code from the exception and error code information.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeValidationException(MGS.WebAPI.Core.Exceptions.ValidationException,System.Int32)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from a ValidationException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeUnauthorizedException(MGS.WebAPI.Core.Exceptions.UnauthorizedException)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from an UnauthorizedException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeForbiddenException(MGS.WebAPI.Core.Exceptions.ForbiddenException)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from a ForbiddenException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeNotFoundException(MGS.WebAPI.Core.Exceptions.NotFoundException)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from a NotFoundException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeBadRequestException(MGS.WebAPI.Core.Exceptions.BadRequestException)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from a <see cref="T:MGS.WebAPI.Core.Exceptions.BadRequestException"/>.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeBaseException(MGS.WebAPI.Core.Exceptions.BaseException)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from a BaseException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeUserTokenValidationException(MGS.JWT.User.UserTokenValidationException)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from a UserTokenValidationException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeJwtBaseException(MGS.JWT.Exceptions.BaseException)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from a JWT.Exceptions.BaseException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeSqlException(System.Data.SqlClient.SqlException,System.Int32)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from a SqlException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.SelectHttpStatusCodeNotImplementedException(System.NotImplementedException,System.Int32)">
+            <summary>
+              Provides stock, overridable functionality for selecting an HttpStatusCode from a NotImplementedException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.CreateErrorResponseAggregateException(System.AggregateException,System.Nullable{System.Int32})">
+            <summary>
+              Provides stock, overridable functionality for selecting an ErrorResponse from an AggregateException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.CreateErrorResponseSqlException(System.Data.SqlClient.SqlException,System.Nullable{System.Int32})">
+            <summary>
+              Provides stock, overridable functionality for selecting an ErrorResponse from a SqlException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.CreateErrorResponseSqlExceptionBrief(System.Data.SqlClient.SqlException,System.Nullable{System.Int32})">
+            <summary>
+              Provides stock, overridable functionality for selecting an ErrorResponse from a SqlException with brief detail.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.CreateErrorResponseSqlExceptionFull(System.Data.SqlClient.SqlException,System.Nullable{System.Int32})">
+            <summary>
+              Provides stock, overridable functionality for selecting an ErrorResponse from a SqlException with full detail.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.CreateErrorResponseBaseException(MGS.WebAPI.Core.Exceptions.BaseException,System.Nullable{System.Int32})">
+            <summary>
+              Provides stock, overridable functionality for selecting an ErrorResponse from a BaseException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.CreateErrorResponseTaskCanceledException(System.Threading.Tasks.TaskCanceledException,System.Nullable{System.Int32})">
+            <summary>
+              Provides stock, overridable functionality for selecting an ErrorResponse from a TaskCanceledException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.CreateErrorResponseJwtBaseException(MGS.JWT.Exceptions.BaseException,System.Nullable{System.Int32})">
+            <summary>
+              Provides stock, overridable functionality for selecting an ErrorResponse from a JWT.Exceptions.BaseException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.CreateErrorResponseCertificateValidationException(MGS.JWT.Exceptions.CertificateValidationException,System.Nullable{System.Int32})">
+            <summary>
+              Provides stock, overridable functionality for selecting an ErrorResponse from a CertificateValidationException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.HarvestInnerException(System.Exception,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+              Include error details contained within an InnerException, if any.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorResponseSelection.MergeDetails(System.String,System.String)">
+            <summary>
+              Merge a message and details into a single string
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.BaseErrorSuppression">
+            <summary>
+              Base class to provide a framework and stock functionality for deciding how to log exceptions.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.IErrorSuppression">
+            <summary>
+              Interface through which an Exception can be classified for logging purposes.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.IErrorSuppression.GetLogAction(System.Exception)">
+            <summary>
+              Decide the way in which an exception should be logged (if at all).
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorSuppression.GetLogAction(System.Exception)">
+            <summary>
+              Decides how a particular Exception will be logged, if at all.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorSuppression.GetLogActionUnauthorizedException(MGS.WebAPI.Core.Exceptions.UnauthorizedException)">
+            <summary>
+              Provides stock, overridable functionality for deciding how to log an UnauthorizedException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorSuppression.GetLogActionValidationException(MGS.WebAPI.Core.Exceptions.ValidationException)">
+            <summary>
+              Provides stock, overridable functionality for deciding how to log a ValidationException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorSuppression.GetLogActionUserTokenValidationException(MGS.JWT.User.UserTokenValidationException)">
+            <summary>
+              Provides stock, overridable functionality for deciding how to log a UserTokenValidationException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorSuppression.GetLogActionNotFoundException(MGS.WebAPI.Core.Exceptions.NotFoundException)">
+            <summary>
+              Provides stock, overridable functionality for deciding how to log a NotFoundException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorSuppression.GetLogActionBadRequestException(MGS.WebAPI.Core.Exceptions.BadRequestException)">
+            <summary>
+              Provides stock, overridable functionality for deciding how to log a BadRequestException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorSuppression.GetLogActionBaseException(MGS.WebAPI.Core.Exceptions.BaseException)">
+            <summary>
+              Provides stock, overridable functionality for deciding how to log a BaseException.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseErrorSuppression.GetLogActionSqlException(System.Data.SqlClient.SqlException)">
+            <summary>
+              Provides stock, overridable functionality for deciding how to log a SqlException.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.BaseSqlErrorUtils">
+            <summary>
+              A helped class for categorising various kinds of database errors.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseSqlErrorUtils.IsDeadlock(System.Data.SqlClient.SqlException)">
+            <summary>
+              Returns true if the provided exception is representative of a deadlock.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseSqlErrorUtils.IsTimeout(System.Data.SqlClient.SqlException)">
+            <summary>
+              Returns true if the provided exception is representative of a timeout.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseSqlErrorUtils.IsLoginFailure(System.Data.SqlClient.SqlException)">
+            <summary>
+              Returns true if the provided exception is representative of a failure to login to the requested database.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseSqlErrorUtils.IsCertainOutcome(System.Data.SqlClient.SqlException)">
+            <summary>
+              Returns true if the provided exception implies that the database was definitely not updated.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.BaseSqlErrorUtils.IsCertainOutcome(System.Data.SqlClient.SqlError)">
+            <summary>
+              Returns true if the provided error implies that the database was definitely not updated.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.ErrorCodeDescriptions">
+            <summary>
+              Helper class which keeps a dictionary of all error codes and their descriptions.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.ErrorCodeDescriptions.Get(System.Int32)">
+            <summary>
+              Recover the descriptionf or a particular error code.
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.ErrorCodeDescriptions.AddDescriptions(System.Type,System.Func{System.Enum,System.String})">
+            <summary>
+              Add all values for a particular enum as error codes, using the provided function to get the description for each code.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.GlobalExceptionHandler">
+            <summary>
+              The stock global exception handler provided by the base library.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.GlobalExceptionHandler.#ctor(MGS.WebAPI.Core.Errors.IErrorCodeResolution,MGS.WebAPI.Core.Errors.IErrorResponseSelection)">
+            <summary>
+              Creates a GlobalExceptionHandler
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Errors.GlobalExceptionHandler.Handle(System.Web.Http.ExceptionHandling.ExceptionHandlerContext)">
+            <summary>
+              Handle an exception.
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Models.CustomHeaders">
+            <summary>
+              Standard HTTP headers which are used with the APIs for various purposes
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Models.CustomHeaders.UserTokenHeader">
+            <summary>
+              The custom header used to provide a user token.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Models.CustomHeaders.AuditUserHeader">
+            <summary>
+              The custom header used to provide a calling username for auditing puposes. This is, for example, the helpdesk user in the employ of the operator.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Models.CustomHeaders.AuditReasonHeader">
+            <summary>
+              The custom header used to provide the reason for a change, for auditing purposes.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Models.CustomHeaders.OperatorTokenHeader">
+            <summary>
+              The custom header used to provide an operator token. This is typically for auditing purposes where the application calling the API uses a service token but wishes to provide additional calling context via an operator token.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Properties.Resources.WebApiInitialisation_ApiMetadataHTMLTemplate">
+            <summary>
+              Looks up a localized string similar to &lt;table class=&quot;table&quot;&gt;
+             &lt;tbody&gt;
+               &lt;tr&gt;
+                 &lt;td&gt;Machine Name&lt;/td&gt;
+                 &lt;td&gt;{0}&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                 &lt;td&gt;ProcessID&lt;/td&gt;
+                 &lt;td&gt;{1}&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                 &lt;td&gt;Platform&lt;/td&gt;
+                 &lt;td&gt;{2}&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                 &lt;td&gt;Runtime&lt;/td&gt;
+                 &lt;td&gt;{3}&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                 &lt;td&gt;NumCPUs&lt;/td&gt;
+                 &lt;td&gt;{4}&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                 &lt;td&gt;ServerGC&lt;/td&gt;
+                 &lt;td&gt;{5}&lt;/td&gt;
+               &lt;/tr&gt;
+               &lt;tr&gt;
+                 &lt;td&gt;HttpConnectionLimit&lt;/td&gt;
+                 &lt;td&gt;{6}&lt;/td&gt;
+               &lt;/tr&gt;
+              [rest of string was truncated]&quot;;.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Properties.Resources.WebApiInitialisation_CompleteHTMLTemplate">
+             <summary>
+               Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+            
+            &lt;head&gt;
+              &lt;meta charset=&quot;utf-8&quot;&gt;
+              &lt;title&gt;{0} - Initialisation Complete&lt;/title&gt;
+              &lt;style&gt;
+                {4}
+              &lt;/style&gt;
+            &lt;/head&gt;
+            
+            &lt;body&gt;
+            
+              &lt;svg class=&quot;icon icon-smile&quot; viewBox=&quot;0 0 16 16&quot;&gt;
+                &lt;path class=&quot;path1&quot; d=&quot;M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zM8 1.5c3.59 0 6.5 2.91 6.5 6.5s-2.91 6.5-6.5 6.5-6.5-2.91-6.5-6.5 2.91-6.5 6.5-6.5zM4 5c0-0.552 0.448-1 1-1s1 0.448 1 1c0 0.552-0.448 1-1 1s-1-0.448-1-1zM10 5c0-0.552 0.448-1 1-1s1 0.448 1 1c0 0.552-0.448 1- [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Properties.Resources.WebApiInitialisation_InCompleteHTMLTemplate">
+             <summary>
+               Looks up a localized string similar to &lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+            
+            &lt;head&gt;
+              &lt;meta charset=&quot;utf-8&quot;&gt;
+              &lt;title&gt;{0} - Initialisation Not Complete&lt;/title&gt;
+              &lt;style&gt;
+                {3}
+              &lt;/style&gt;
+            &lt;/head&gt;
+            
+            &lt;body&gt;
+            
+              &lt;svg class=&quot;icon icon-sad&quot; viewBox=&quot;0 0 16 16&quot;&gt;
+                &lt;path class=&quot;path1&quot; d=&quot;M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zM8 1.5c3.59 0 6.5 2.91 6.5 6.5s-2.91 6.5-6.5 6.5-6.5-2.91-6.5-6.5 2.91-6.5 6.5-6.5zM4 5c0-0.552 0.448-1 1-1s1 0.448 1 1c0 0.552-0.448 1-1 1s-1-0.448-1-1zM10 5c0-0.552 0.448-1 1-1s1 0.448 1 1c0 0.552-0.448 1-1 1s-1-0.448 [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Properties.Resources.WebApiInitialisation_Style">
+             <summary>
+               Looks up a localized string similar to body {
+              font-family: &quot;Segoe UI Light&quot;, Frutiger, &quot;Frutiger Linotype&quot;, &quot;Dejavu Sans&quot;, &quot;Helvetica Neue&quot;, Arial, sans-serif;
+              background-color: #fff;
+            }
+            
+            .container,
+            .header,
+            body,
+            html,
+            nav {
+              width: 100%;
+            }
+            
+            .container {
+              max-width: 960px;
+              margin: 0 auto;
+              padding: 0 32px
+            }
+            
+            .header .container {
+              display: table;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              margin: auto;
+            }
+            
+            h1 {
+              font-size: 3em;
+              margin: 2px 0;
+            }
+            
+            h2 {
+              fon [rest of string was truncated]&quot;;.
+             </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Utilities.HttpContextUtils">
+            <summary>
+              Helper class to assist with details which depend on HttpContext.Current.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Diagnostics.MetricsCollector">
+            <summary>
+              A class which assist with providing counters to log diagnostic information.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.#ctor(MGS.SystemServices.Core.Interfaces.ISystemConfiguration,System.String)">
+            <summary>
+              Creates a MetricsCollector for the specific category.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.MeasureWithoutContext(System.String)">
+            <summary>
+              Start a timed measurement. Use this when the Operator/Product is not meaningful for the action being measured.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.MeasureWithoutProductContext(System.String,MGS.SystemServices.Core.Models.Operator,System.String)">
+            <summary>
+              Start a timed measurement. Use this when the Product is not meaningful for the action being measured, but Operator might be.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.MeasureWithoutProductOrOperatorContext(System.String,System.String)">
+            <summary>
+              Start a timed measurement. Use this when neither the Product nor Operator is meaningful for the action being measured, but the caller is.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.Measure(System.String)">
+            <summary>
+              Start a timed measurement. Use this when the ProductId is not known at the time of creation, but might be later.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.Measure(System.String,System.Int32)">
+            <summary>
+              Starts a timed measurement. Use this if the ProductId is known at the time of creation.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.Measure(System.String,System.Int32,MGS.SystemServices.Core.Models.Operator)">
+            <summary>
+              Starts a timed measurement. Use this if the ProductId is known at the time of creation and you wish to supply the Operator explicitly.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.Measure(System.String,MGS.WebAPI.Core.Diagnostics.CallerContext)">
+            <summary>
+              Starts a timed measurement. Use this if you have the CallerContext and want to use it for all details.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.Measure(System.String,MGS.SystemServices.Core.Models.Product,MGS.SystemServices.Core.Models.Operator,System.Boolean,System.String)">
+            <summary>
+              Starts a timed measurement. Use this if the both the Product and Operator are known at the time of creation and you with to set them explicitly.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.Measure(System.String,MGS.SystemServices.Core.Models.Product,MGS.SystemServices.Core.Models.Operator,System.Boolean,System.Boolean,System.String)">
+            <summary>
+              Starts a timed measurement. Use this if the both the Product and Operator are known at the time of creation and you with to set them explicitly.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.Update(MGS.SystemServices.Core.Diagnostics.StandardCounter,System.Int32)">
+            <summary>
+              Updates the ProductId for a StandardCounter. Use this if you didn't know the ProductId at the time of creation, but now you do.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.UpdateAsync(MGS.SystemServices.Core.Diagnostics.StandardCounter,System.Int32)">
+            <summary>
+              Updates the ProductId for a StandardCounter. Use this if you didn't know the ProductId at the time of creation, but now you do. Async version.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.GetCaller(System.Security.Claims.ClaimsIdentity)">
+            <summary>
+              Get a metrics friendly calling application name from the identity.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.GetOperator(System.Security.Claims.ClaimsIdentity)">
+            <summary>
+              Get a metrics friendly Operator from the identity.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.GetProduct(System.Int32)">
+            <summary>
+              Safely get product details.
+            </summary>
+            <remarks>Uses the local cache and then a call to the System Configuration Api only if the details are not found.</remarks>
+            <returns>The details for the specified product, if it could be found. On any failure, returns details for an Unknown product.</returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.GetProductAsync(System.Int32)">
+            <summary>
+              Safely get product details.
+            </summary>
+            <remarks>Uses the local cache and then a call to the System Configuration Api only if the details are not found.</remarks>
+            <returns>The details for the specified product, if it could be found. On any failure, returns details for an Unknown product.</returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Diagnostics.MetricsCollector.GetProductType(System.Security.Claims.ClaimsIdentity)">
+            <summary>
+              Get a metrics friendly productType from the identity.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Exceptions.ForbiddenException">
+            <summary>
+              An specialisation of a BaseException which wants to be transformed into a Forbidden HTTP response.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ForbiddenException.#ctor(System.Int32,System.String,System.String,System.Exception)">
+            <summary>
+              Creates a ForbiddenException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ForbiddenException.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+              Creates a ForbiddenException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ForbiddenException.#ctor(System.Int32,System.String)">
+            <summary>
+              Creates a ForbiddenException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ForbiddenException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+              Creates a ForbiddenException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ForbiddenException.#ctor(System.Int32,System.Exception)">
+            <summary>
+              Creates a ForbiddenException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.LogAction">
+            <summary>
+              Describes the possibilites for how an Exception should be logged.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Errors.LogAction.Suppress">
+            <summary>
+              Don't log the Exception.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Errors.LogAction.LogAsWarning">
+            <summary>
+              Log the Exception with warning severity.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Errors.LogAction.LogAsError">
+            <summary>
+              Log the Exception with error severity.
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.Errors.LogAction.LogAsCritical">
+            <summary>
+              Log the Exception with critical severity.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Exceptions.UnauthorizedException">
+            <summary>
+              An specialisation of a BaseException which wants to be transformed into a Unauthorized HTTP response.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.UnauthorizedException.#ctor(System.Int32,System.String,System.String,System.Exception)">
+            <summary>
+              Creates a UnauthorizedException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.UnauthorizedException.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+              Creates a UnauthorizedException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.UnauthorizedException.#ctor(System.Int32,System.String)">
+            <summary>
+              Creates a UnauthorizedException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.UnauthorizedException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+              Creates a UnauthorizedException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.UnauthorizedException.#ctor(System.Int32,System.Exception)">
+            <summary>
+              Creates a UnauthorizedException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.ModelBinders.IsoTimespanModelBinder">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.ModelBinders.IsoTimespanModelBinder.BindModel(System.Web.Http.Controllers.HttpActionContext,System.Web.Http.ModelBinding.ModelBindingContext)">
+            <summary>
+            
+            </summary>
+            <param name="actionContext"></param>
+            <param name="bindingContext"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Exceptions.NotFoundException">
+            <summary>
+              An specialisation of a BaseException which wants to be transformed into a NotFound HTTP response.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.NotFoundException.#ctor(System.Int32,System.String,System.String,System.Exception)">
+            <summary>
+              Creates a NotFoundException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.NotFoundException.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+              Creates a NotFoundException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.NotFoundException.#ctor(System.Int32,System.String)">
+            <summary>
+              Creates a NotFoundException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.NotFoundException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+              Creates a NotFoundException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.NotFoundException.#ctor(System.Int32,System.Exception)">
+            <summary>
+              Creates a NotFoundException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Exceptions.ValidationException">
+            <summary>
+              An specialisation of a BaseException which wants to be intepreted as an input validation issue and transformed into a BadRequest HTTP response.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ValidationException.#ctor(System.Int32,System.String,System.String,System.Exception)">
+            <summary>
+              Creates a ValidationException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ValidationException.#ctor(System.Int32,System.String,System.String)">
+            <summary>
+              Creates a ValidationException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ValidationException.#ctor(System.Int32,System.String)">
+            <summary>
+              Creates a ValidationException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ValidationException.#ctor(System.Int32,System.String,System.Exception)">
+            <summary>
+              Creates a ValidationException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Exceptions.ValidationException.#ctor(System.Int32,System.Exception)">
+            <summary>
+              Creates a ValidationException with the supplied parameters.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Extensions.RequestExtensions">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.NoContent(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.NotFound(System.Net.Http.HttpRequestMessage,System.Int32,System.String,System.String)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.NotFound(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.NotFound(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.BadRequest(System.Net.Http.HttpRequestMessage,System.Int32,System.String,System.String)">
+            <summary>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.BadRequest(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.BadRequest(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.InternalServerError(System.Net.Http.HttpRequestMessage,System.Int32,System.String,System.String)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.InternalServerError(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.InternalServerError(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.NotImplemented(System.Net.Http.HttpRequestMessage,System.Int32,System.String,System.String)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.NotImplemented(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.NotImplemented(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.Unauthorized(System.Net.Http.HttpRequestMessage,System.Int32,System.String,System.String)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.Unauthorized(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.Unauthorized(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.Forbidden(System.Net.Http.HttpRequestMessage,System.Int32,System.String,System.String)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.Forbidden(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.Forbidden(System.Net.Http.HttpRequestMessage,MGS.WebAPI.Core.Errors.ErrorResponse,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.SetProductContext(System.Net.Http.HttpRequestMessage,MGS.SystemServices.Core.Models.Product)">
+            <summary>
+              Sets the Product context for this request.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.GetProductContext(System.Net.Http.HttpRequestMessage)">
+            <summary>
+              Gets the Product context for this request, assuming it has already been set (typically this is done by the ProductResolver action filter).
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.SetTimedMeasurement(System.Net.Http.HttpRequestMessage,MGS.Metrics.TimedMeasurement)">
+            <summary>
+              Sets the timed measurement for this request.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.RequestExtensions.GetTimedMeasurement(System.Net.Http.HttpRequestMessage)">
+            <summary>
+              Gets the timed measurement for this request, assuming it has already been set.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Core.EmptyActionResult">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Core.EmptyActionResult.ExecuteAsync(System.Threading.CancellationToken)">
+            <summary>
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Core.ErrorResponseActionResult">
+            <summary>
+              Represents an IHttpActionResult which was an error.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Core.ErrorResponseActionResult.ExecuteAsync(System.Threading.CancellationToken)">
+            <summary>
+            </summary>
+            <param name="cancellationToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Core.ErrorResponseActionResult.Execute">
+            <summary>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Errors.ErrorResponse">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Errors.ErrorResponse.Application">
+            <summary>
+              Application from which the error originated.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Errors.ErrorResponse.Code">
+            <summary>
+              Unique integer error code for this error.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Errors.ErrorResponse.Message">
+            <summary>
+              Human friendly description of the nature of the error which has occurred. This should try to classify and describe the error in a way which makes sense a a human.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Errors.ErrorResponse.Details">
+            <summary>
+              Technical detail of what has broken. This could include exception messages, call stack detail or other information which could help troubleshoot the specific issue.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Errors.ErrorResponse.Errors">
+            <summary>
+              Additional related errors.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Errors.ErrorResponse.Metadata">
+            <summary>
+              Additional metadata relating to the error to assist the caller in handling it correctly.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Extensions.ApiControllerExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.NoContent(System.Web.Http.ApiController)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.NotFound(System.Web.Http.ApiController,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.NotFound(System.Web.Http.ApiController,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="application"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.NotFound(System.Web.Http.ApiController,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.BadRequest(System.Web.Http.ApiController,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.BadRequest(System.Web.Http.ApiController,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="application"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.BadRequest(System.Web.Http.ApiController,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.InternalServerError(System.Web.Http.ApiController,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.InternalServerError(System.Web.Http.ApiController,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="application"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.InternalServerError(System.Web.Http.ApiController,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.NotImplemented(System.Web.Http.ApiController,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.NotImplemented(System.Web.Http.ApiController,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="application"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.NotImplemented(System.Web.Http.ApiController,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.Unauthorized(System.Web.Http.ApiController,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.Unauthorized(System.Web.Http.ApiController,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="application"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.Unauthorized(System.Web.Http.ApiController,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.Forbidden(System.Web.Http.ApiController,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.Forbidden(System.Web.Http.ApiController,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="application"></param>
+            <param name="code"></param>
+            <param name="message"></param>
+            <param name="description"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.Forbidden(System.Web.Http.ApiController,MGS.WebAPI.Core.Errors.ErrorResponse)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <param name="error"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.GetClaimsIdentity(System.Web.Http.ApiController)">
+            <summary>
+            
+            </summary>
+            <param name="controller"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.GetNullableOperatorId(System.Web.Http.ApiController)">
+            <summary>
+            Get the operatorId for the current context, if any.
+            </summary>
+            <param name="controller"></param>
+            <returns>Returns the operatorId from the identity of the security principal, if any.</returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.GetUserTokenHeaderValue(System.Web.Http.ApiController)">
+            <summary>
+              Get the value of the X-UserToken HTTP header. Will throw() if the header is not present or the value is null or whitespace.
+            </summary>
+            <param name="controller"></param>
+            <returns>The raw, unvalidated value of the X-UserToken header.</returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.GetAuditData(System.Web.Http.ApiController)">
+            <summary>
+              Get the audit data for the current request, if any.
+            </summary>
+            <param name="controller"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.GetProductType(System.Web.Http.ApiController)">
+            <summary>
+              Gets the value of the productType claim, if it exists. This is the assigned ProductType of the calling application.
+            </summary>
+            <param name="controller"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.ApiControllerExtensions.GetCallerContext(System.Web.Http.ApiController)">
+            <summary>
+              Gets the particulars of the caller context, based on claims in the proffered token and gets product context from the request.
+            </summary>
+            <param name="controller"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Extensions.StringExtensions">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Extensions.StringExtensions.SplitToList(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Config.WebApiConfigurationSection">
+            <summary>
+            Configuration section containing settings for System Configuration and System Security integration as well as Authentication.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.WebApiConfigurationSection.SystemConfiguration">
+            <summary>
+            Describes all system configuration details
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.WebApiConfigurationSection.Authentication">
+            <summary>
+            Describes the authentication of tokens on incoming requests.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.WebApiConfigurationSection.SystemSecurity">
+            <summary>
+            Describes the details for registering of applications with System Configuration and the fetching of Service Tokens.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Config.AuthenticationElement">
+            <summary>
+            Element containing all the information regarding authentication of tokens for incoming requests.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.AuthenticationElement.AllowedIssuers">
+            <summary>
+            A comma delimited list of all issues that are allowed access to the api. The issuer of a token can be found in the 'iss' claim.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.AuthenticationElement.AllowedAudiences">
+            <summary>
+            A comma delimited list of all audiences that are allowed access to the api. The audience of a token can be found in the 'aud' claim.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.AuthenticationElement.CertificatePath">
+            <summary>
+            The path at which the underlying security library <see cref="N:MGS.JWT"/> will look for certificates
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Config.SystemSecurityElement">
+            <summary>
+            Element containing all the information required for a System Security integration.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.SystemSecurityElement.AllowedIssuers">
+            <summary>
+            A comma delimited list of all issues that are allowed access to the api. The issuer of a token can be found in the 'iss' claim.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.SystemSecurityElement.AllowedAudiences">
+            <summary>
+            A comma delimited list of all audiences that are allowed access to the api. The audience of a token can be found in the 'aud' claim.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.SystemSecurityElement.CertificatePath">
+            <summary>
+            The path at which the underlying security library <see cref="N:MGS.JWT"/> will look for certificates
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.SystemSecurityElement.ServiceTokenImmediateRetryDelayMilliseconds">
+            <summary>
+            The delay in milliseconds that the library will wait if it is unable to successfully able refresh the Service Token.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.SystemSecurityElement.ApiKey">
+            <summary>
+            All information about how the API Keys from System Security is to be handled.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Config.ApiKeyElement">
+            <summary>
+            Contains all information about how the API Keys from System Security are handled.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.ApiKeyElement.RootPath">
+            <summary>
+            This is where on disc it will write the API Key.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.ApiKeyElement.MaxRetryCount">
+            <summary>
+            How many times after the api registers with System Security that it will attempt to get a Service Token. Default is 3.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.ApiKeyElement.RetryDelaySeconds">
+            <summary>
+            The delay between each time it tries to get a Service Token. Default is 5.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Config.SystemConfigurationElement">
+            <summary>
+            Contains all information about the System Configuration integration.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Config.SystemConfigurationElement.RootUrl">
+            <summary>
+            The http base url of System Configuration.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Persistance.IDbConnectionFactory">
+            <summary>
+              Defines the interface for a SQL Server database connection factory.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Persistance.IDbConnectionFactory.Open(System.String)">
+            <summary>
+              Creates and opens a database connection, given a connection string.
+            </summary>
+            <param name="connectionString">The connection string provifing details about the connection.</param>
+            <returns>The opened connection.</returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Persistance.IDbConnectionFactory.OpenAsync(System.String)">
+            <summary>
+              Creates and opens a database connection, given a connection string.
+            </summary>
+            <param name="connectionString">The connection string provifing details about the connection.</param>
+            <returns>The opened connection.</returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Persistance.SqlDbConnectionFactory">
+            <summary>
+              A SqlConnection factory.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Persistance.SqlDbConnectionFactory.Open(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="connectionString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Persistance.SqlDbConnectionFactory.OpenAsync(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="connectionString"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Utilities.Converter">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Utilities.Converter.GetCommaDelimited``1(System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="delimitedValues"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Utilities.Converter.GetDelimited``1(System.String,System.Char[])">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="delimitedValues"></param>
+            <param name="delimiters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Utilities.Converter.HexToByteArray(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Utilities.Converter.ByteArrayToHex(System.Collections.Generic.IEnumerable{System.Byte})">
+            <summary>
+            
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Validation.NotEmptyIfNotNullAttribute">
+            <summary>
+              An attribute for checking that a code element, if it is a non-null string, is not empty or whitespace.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Validation.NotEmptyIfNotNullAttribute.IsValid(System.Object)">
+            <summary>
+              Checks whether the code element satisfies the conditions of this attribute.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.Validation.NotEmptyIfNotNullAttribute.FormatErrorMessage(System.String)">
+            <summary>
+              Provides a formatted error message for the code element which failed validation.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.WebApiHelper">
+            <summary>
+            For more info see: http://wiki/MGS.WebAPI.Core
+            </summary>
+        </member>
+        <member name="F:MGS.WebAPI.Core.WebApiHelper.LoadedCoreSettings">
+            <summary>
+            The currently loaded core settings.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.Configure(System.String,System.Action{MGS.SystemServices.Core.Interfaces.ISystemConfiguration,MGS.SystemServices.Core.Interfaces.ISystemSecurity},System.String)">
+            <summary>
+            Configures and sets up web api to handle Metrics, Logging, Token Based Authentication and System Services.
+            Reads configuration from webApiHelper section in the web.config. 
+            </summary>
+            <param name="applicationName">Uses application name for initialization of Logging, Metrics, System Configuration and System Security</param>
+            <param name="onCompleteCallback">Callback is fired when initialization is complete and passes the instantiated instances of <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemConfiguration"/> and <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemSecurity"/></param>
+            <param name="apiVersion">The version of the API. This will be added as a response header X-Api-Version to every response.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.Configure(System.String,System.String,System.String,System.String,System.Action{MGS.SystemServices.Core.Interfaces.ISystemConfiguration,MGS.SystemServices.Core.Interfaces.ISystemSecurity},System.Web.Http.ExceptionHandling.IExceptionHandler,System.Web.Http.ExceptionHandling.IExceptionLogger,System.String)">
+            <summary>
+            Configures and sets up web api to handle Metrics, Logging, Token Based Authentication and System Services.
+            Reads configuration from webApiHelper section in the web.config. 
+            </summary>
+            <param name="webApiName">Used for logging and metrics. System Security uses it as the name of the application when registering the API</param>
+            <param name="systemSecurityApplicationName">Name of the application in System Security, this needs to be part of the presets for the System Security database</param>
+            <param name="systemConfigurationApplicationName">Name of the application in System Configuration, this needs to be part of the presets for the System Configuration database. It is used in filtering of database connection strings and urls</param>
+            <param name="metricsApplicationName">Name of the application in the metrics system, typically {API}.{SubAPI}</param>
+            <param name="onCompleteCallback">Callback is fired when initialization is complete and passes the instantiated instances of <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemConfiguration"/> and <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemSecurity"/></param>
+            <param name="customExceptionHandler">Custom exception handler used by the application, if any. If this is null then a default exception handler will be added.</param>
+            <param name="customExceptionLogger">Custom exception logger used by the application, if any. If this is null then a default exception logger will be added.</param>
+            <param name="apiVersion">The version of the API. This will be added as a response header X-Api-Version to every response.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.Dispose">
+            <summary>
+            Should be called on shutdown to allow the library to clean up gracefully.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.Configure(System.String,System.String,System.String,System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Action{MGS.SystemServices.Core.Interfaces.ISystemConfiguration,MGS.SystemServices.Core.Interfaces.ISystemSecurity},System.Web.Http.ExceptionHandling.IExceptionHandler,System.Web.Http.ExceptionHandling.IExceptionLogger,System.String,MGS.JWT.Web.ValidationExceptionHandler)">
+            <summary>
+            Configures and sets up web api to handle Metrics, Logging, Token Based Authentication and System Services.
+            All values needed for configuration are parameters. This method can be used for consumers choosing to opt out of the webApiHelp config section. 
+            </summary>
+            <param name="webApiName">Used for logging and metrics. System Security uses it as the name of the application when registering the API</param>
+            <param name="systemSecurityApplicationName">Name of the application in System Security, this needs to be part of the presets for the System Security database</param>
+            <param name="systemConfigurationApplicationName">Name of the application in System Configuration, this needs to be part of the presets for the System Configuration database. It is used in filtering of database connection strings and urls</param>
+            <param name="metricsApplicationName">Metrics application to use as the base namespace. This is appended to form an "api.{metricsApplicationName}" prefix</param>
+            <param name="allowedIssuersList">List of allowed issuers. Validated against the bearer JWT token's "iss" claim.</param>
+            <param name="allowedAudiencesList">List of allowed audiences. Validated against the bearer JWT token's "aud" claim</param>
+            <param name="certPath">Base path of where the certificate used to validate the JWT's can be found</param>
+            <param name="systemConfigurationRootUrl">Base url for the system configuration api </param>
+            <param name="apiKeyRootPath">Path where the API will look for it's locally stored API Key which was issued by System Security</param>
+            <param name="apiKeyRetryDelaySeconds">Delay in seconds between each retry attempt to try get a Service Token</param>
+            <param name="apiKeyMaxRetryCount">Maximum amount of times the API will attempt to get a Service Token from System Security before it shuts down</param>
+            <param name="serviceTokenImmediateRetryDelayMilliseconds">If a the API's service token is about to expire and the renewal process fails it is under threat of expiring and therefore we try again immediately based on this value</param>
+            <param name="onCompleteCallback">Callback is fired when initialization is complete and passes the instantiated instances of <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemConfiguration"/> and <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemSecurity"/></param>
+            <param name="customExceptionHandler">Custom exception handler used by the application, if any. If this is null then a default exception handler will be added.</param>
+            <param name="customExceptionLogger">Custom exception logger used by the application, if any. If this is null then a default exception logger will be added.</param>
+            <param name="apiVersion">The version of the API. This will be added as a response header X-Api-Version to every response.</param>
+            <param name="validationExceptionHandler">Optional callback which is fired when a service or operator token validation fails.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeApplicationName(System.String)">
+            <summary>
+            Initializes just the Application Name property. Reason for this is the ApplicationName is referenced by some helper methods and extensions.
+            </summary>
+            <example>APIController extensions will try lookup the application name if not specified in the parameters</example>
+            <param name="webApiName">The name of the Web API</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeAuthentication(System.String,System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String},System.String,MGS.JWT.Web.ValidationExceptionHandler)">
+            <summary>
+            Initializes JWT token based authentication via a DelegatingHandler which checks for an Authorization header whos value begins "Bearer "
+            </summary>
+            <param name="webApiName">The name of the Web API</param>
+            <param name="allowedIssuersList">List of allowed issuers. Validated against the bearer JWT token's "iss" claim.</param>
+            <param name="allowedAudiencesList">List of allowed audiences. Validated against the bearer JWT token's "aud" claim</param>
+            <param name="certPath">Base path of where the certificate used to validate the JWT's can be found</param>
+            <param name="validationExceptionHandler">Optional handler to use for notifications when token validation failures happen</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeVersioning(System.String)">
+            <summary>
+              Adds a delegating handler which ensures that every API response has an HTTP header X-Api-Version with the version of the API.
+            </summary>
+            <remarks>The version is derived by looking at the file version info for the file which contains the assembly which is the direct caller of this helper library.</remarks>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.RemoveVersioning">
+            <summary>
+              Removes the delegating handler for those callers who want to opt-out of the functionality.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.GetConfigSettings(System.String)">
+            <summary>
+            This method will attempt to get settings from the configuration file.
+            </summary>
+            <param name="section">The name of the configuration section.</param>
+            <returns>A core settings object.</returns>
+            <exception cref="T:System.Configuration.ConfigurationErrorsException">This exception gets thrown if the config section could not be loaded.</exception>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeLogging(MGS.Logging.ILogger)">
+            <summary>
+            Initializes logging using an implementation of MGS.Logging's ILogger interface, with the stock suppression and error code resolution.
+            </summary>
+            <param name="logger">The ILogger implemenation to be used.</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeLogging(System.String)">
+            <summary>
+            Initializes logging using the supplied name for the trace source used by MGS.Logging, with the stock suppression and error code resolution.
+            </summary>
+            <param name="traceSource">The source name configured in the web.config</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeLogging(System.Web.Http.ExceptionHandling.IExceptionLogger)">
+            <summary>
+              Initialises logging using the supplied custom exception logger, or sets up a default one if none is provided. Requires that the ApplicationName has been set.
+            </summary>
+            <param name="customExceptionLogger"></param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeExceptionHandler(System.Web.Http.ExceptionHandling.IExceptionHandler)">
+            <summary>
+              Initialises exception handling via the supplied handler, or sets up a default one if none is provided.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeMetrics(System.String,System.Int32,System.String)">
+            <summary>
+            Initializes the metrics factory with values provided
+            </summary>
+            <param name="metricsServer">Servers hostname or ip address</param>
+            <param name="metricsPort">Port to communicate on</param>
+            <param name="prefix">Prefix is prepended to any metrics with api.{prefix}</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeSystemServices(System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Action{MGS.SystemServices.Core.Interfaces.ISystemConfiguration,MGS.SystemServices.Core.Interfaces.ISystemSecurity})">
+            <summary>
+            Initializes both System Configuration and System Security. 
+            - Setups up System Configuration and System Security instances
+            - Registration of application with System Security
+            - API Key management
+            - Service Token management including background refreshing
+            </summary>
+            <param name="systemConfigurationRootUrl">Base url for the system configuration api </param>
+            <param name="applicationName">Name of the application in both System Configuration and System Security</param>
+            <param name="apiKeyRootPath">Path where the API will look for it's locally stored API Key which was issued by System Security</param>
+            <param name="apiKeyRetryDelaySeconds">Delay in seconds between each retry attempt to try get a Service Token</param>
+            <param name="apiKeyMaxRetryCount">Maximum amount of times the API will attempt to get a Service Token from System Security before it shuts down</param>
+            <param name="serviceTokenImmediateRetryDelayMilliseconds">If a the API's service token is about to expire and the renewal process fails it is under threat of expiring and therefore we try again immediately based on this value</param>
+            <param name="onCompleteCallback">Callback is fired when initialization is complete and passes the instantiated instances of <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemConfiguration"/> and <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemSecurity"/></param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiHelper.InitializeSystemServices(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Action{MGS.SystemServices.Core.Interfaces.ISystemConfiguration,MGS.SystemServices.Core.Interfaces.ISystemSecurity})">
+            <summary>
+            Initializes both System Configuration and System Security. 
+            - Setups up System Configuration and System Security instances
+            - Registration of application with System Security
+            - API Key management
+            - Service Token management including background refreshing
+            </summary>
+            <param name="systemConfigurationRootUrl">Base url for the system configuration api </param>
+            <param name="webApiName">Used for logging and metrics. System Security uses it as the name of the application when registering the API</param>
+            <param name="systemSecurityApplicationName">Name of the application in System Security, this needs to be part of the presets for the System Security database</param>
+            <param name="systemConfigurationApplicationName">Name of the application in System Configuration, this needs to be part of the presets for the System Configuration database. It is used in filtering of database connection strings and urls</param>
+            <param name="apiKeyRootPath">Path where the API will look for it's locally stored API Key which was issued by System Security</param>
+            <param name="apiKeyRetryDelaySeconds">Delay in seconds between each retry attempt to try get a Service Token</param>
+            <param name="apiKeyMaxRetryCount">Maximum amount of times the API will attempt to get a Service Token from System Security before it shuts down</param>
+            <param name="serviceTokenImmediateRetryDelayMilliseconds">If a the API's service token is about to expire and the renewal process fails it is under threat of expiring and therefore we try again immediately based on this value</param>
+            <param name="onCompleteCallback">Callback is fired when initialization is complete and passes the instantiated instances of <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemConfiguration"/> and <see cref="T:MGS.SystemServices.Core.Interfaces.ISystemSecurity"/></param>
+        </member>
+        <member name="P:MGS.WebAPI.Core.WebApiHelper.ApplicationName">
+            <summary>
+            Name of the web api that was initialized.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.DelegatingHandlers.WebApiInitialisationDelegatingHandler">
+            <summary>
+            Message handler returns the initialisation status if the api is not ready yet.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.DelegatingHandlers.WebApiInitialisationDelegatingHandler.SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)">
+            <summary>
+              Override normal behaviour to (1) permit /docs/ requests through always or (2) provide a status page/result if the initialisation is still in progress.
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.WebApiInitialisationHandler">
+            <summary>
+            Singleton handler to help with the initialisation of WebApi's.
+            Protects against potentially multiple initialisation calls.
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiInitialisationHandler.Initialise(System.String,System.Action,System.Func{System.Threading.Tasks.Task})">
+            <summary>
+              Initialise the application. Sets up action filters which will automatically retry the initialisation when requests are made to the api (if the initialisation is not yet successful).
+            </summary>
+            <param name="applicationName">
+            The name of the application. This will be used in the detail returned when the initialisation is not yet complete.
+            </param>
+            <param name="synchronousInitialisation">
+            A callback which will be invoked to perform any synchronous application specific intialisation. 
+            Typically anything that interacts with the MVC or WebApi pipeline must be done syncronously to avoid any strange behaviour.
+            Called as part of this method and whenever an action filter retries initialisation.
+            </param>
+            <param name="asynchronousInitialisation">
+             A callback function that returns a task which will be invoked to perform any asynchronous application specific intialisation. 
+             The optional callback allows some initialisation to take place in a non-blocking fashion. 
+             It must however return the task so it's completion can be predicted.
+             Called as part of this method and whenever an action filter retries initialisation.
+            </param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiInitialisationHandler.OnSuccess">
+            <summary>
+            Allows external callers to invoke that initialisation was successful.
+            This will be called internally so only needs to be done in rare cases
+            </summary>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiInitialisationHandler.OnFailed(System.Exception)">
+            <summary>
+            Allows external callers to invoke that initialisation failed.
+            This will be called internally so only needs to be done in rare cases
+            </summary>
+            <param name="exception">The exception that occurred</param>
+        </member>
+        <member name="M:MGS.WebAPI.Core.WebApiInitialisationHandler.Initialise">
+            <summary>
+             Performs the initialisation by invoking the synchronous initialisation callback. 
+             If provided will also invoke the asynchronous callback and handles it's completion.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.WebApiInitialisationHandler.Current">
+            <summary>
+            The singleton instance of the handler
+            </summary>
+        </member>
+        <member name="E:MGS.WebAPI.Core.WebApiInitialisationHandler.WebApiInitialised">
+            <summary>
+            Event which is fired when the WebApi has been initialized
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.WebApiInitialisationHandler.ApplicationName">
+            <summary>
+            The name of the WebApi
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.WebApiInitialisationHandler.IsInitialised">
+            <summary>
+            Is the WebApi successfully initialised
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.WebApiInitialisationHandler.IsInitialising">
+            <summary>
+            Is the WebApi currently in the process of initialisation
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.WebApiInitialisationHandler.InitialisationErrors">
+            <summary>
+            A collection of any errors encountered during initialisation
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.WebApiInitialisationHandler.Metadata">
+            <summary>
+            A collection of any errors encountered during initialisation
+            </summary>
+        </member>
+        <member name="T:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata">
+            <summary>
+            Metadata holding information about the api's initialisation state.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.Application">
+            <summary>
+            Name of the web api that was initialized.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.MachineName">
+            <summary>
+            The name of the machine that is hosting the web api.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.ProcessId">
+            <summary>
+            The process id on the server.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.Platform">
+            <summary>
+            x86 / x64
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.Runtime">
+            <summary>
+            Version of the .NET framework runtime that the api is running on.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.ProcessorCount">
+            <summary>
+            Number of processors.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.ServerGC">
+            <summary>
+            Is server garbage enabled.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.HttpConnectionLimit">
+            <summary>
+            The maximum number of concurrent connections allowed to be made from the api out to other systems. 
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.BuildType">
+            <summary>
+            Debug / Release mode.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.Version">
+            <summary>
+            The version of the api. Pull off the <see cref="T:MGS.WebAPI.Core.DelegatingHandlers.ApiVersionHandler"/> message handler.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.ApiDocsUrl">
+            <summary>
+            The url for the apo documentation page.
+            </summary>
+        </member>
+        <member name="P:MGS.WebAPI.Core.Models.WebApiInitialisationMetadata.ClientLibraryUrl">
+            <summary>
+            The url for the auto-generated client library nuget package.
+            </summary>
+        </member>
+    </members>
+</doc>

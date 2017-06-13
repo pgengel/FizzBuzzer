@@ -1,0 +1,1032 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MGS.Logging</name>
+    </assembly>
+    <members>
+        <member name="T:MGS.Logging.Entry">
+            <summary>
+            Helper to hold the info for an event which might be logged.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.Entry.Severity">
+            <summary>
+            The <see cref="P:MGS.Logging.Entry.Severity"/> of the event.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.Entry.Message">
+            <summary>
+            A string containing the message and standard formatting placeholders.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.Entry.EventID">
+            <summary>
+            An integer identifier for the event.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.Entry.Details">
+            <summary>
+            An object which contains additional detail about the event.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.Entry.FormatParameters">
+            <summary>
+            An object array containing zero or more objects to format.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.ILogFormatter">
+            <summary>
+            Provides a means for objects logged as the custom details object to control their own formatting.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILogFormatter.Format">
+            <summary>
+            Provide the formatted string which should be logged for the details object
+            </summary>
+            <returns>The formatted object</returns>
+        </member>
+        <member name="T:MGS.Logging.ILoggingEventSource">
+            <summary>
+            Helper so that we can ease swapping out EventSource for unit tests.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILoggingEventSource.LogAlways(System.String,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Necessary declaration for unit tests.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILoggingEventSource.LogCritical(System.String,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Necessary declaration for unit tests.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILoggingEventSource.LogError(System.String,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Necessary declaration for unit tests.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILoggingEventSource.LogWarning(System.String,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Necessary declaration for unit tests.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILoggingEventSource.LogInformational(System.String,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Necessary declaration for unit tests.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILoggingEventSource.LogVerbose(System.String,System.Int32,System.Int32,System.String,System.String)">
+            <summary>
+            Necessary declaration for unit tests.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILoggingEventSource.IsEnabled">
+            <summary>
+            Necessary declaration for unit tests.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILoggingEventSource.IsEnabled(System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords)">
+            <summary>
+            Necessary declaration for unit tests.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.BaseTraceListener">
+            <summary>
+            Base class for custom trace listeners. Re-routes all the various methods for tracing a message to a single method which concrete specialisations must implement.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.#ctor">
+            <summary>
+            Default Constructor.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.#ctor(System.String)">
+            <summary>
+            Constructor with name.
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.Close">
+            <summary>
+            Flushes and Closes the listener.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.TraceData(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.Object)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.TraceData(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.Object[])">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.TraceEvent(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.TraceEvent(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.String)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.TraceEvent(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.String,System.Object[])">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+            <param name="format"></param>
+            <param name="args"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.TraceTransfer(System.Diagnostics.TraceEventCache,System.String,System.Int32,System.String,System.Guid)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="id"></param>
+            <param name="message"></param>
+            <param name="relatedActivityId"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.Write(System.Object)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="o"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.Write(System.Object,System.String)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="o"></param>
+            <param name="category"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.Write(System.String)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.Write(System.String,System.String)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="message"></param>
+            <param name="category"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.WriteLine(System.Object)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="o"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.WriteLine(System.Object,System.String)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="o"></param>
+            <param name="category"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.WriteLine(System.String)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.WriteLine(System.String,System.String)">
+            <summary>
+            Seals the base class implementation and redirects to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="message"></param>
+            <param name="category"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.LogEvent(MGS.Logging.Severity,System.String,System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Privileged method for use by MGS.Logging. Imposes filtering checks, converts details to JSON and then logs the message to the specialised class.
+            </summary>
+            <param name="severity"></param>
+            <param name="source"></param>
+            <param name="message"></param>
+            <param name="id"></param>
+            <param name="details"></param>
+            <param name="formatParameters"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.OnShouldTrace(MGS.Logging.Severity,System.String,System.String,System.Int32,System.Object,System.Object)">
+            <summary>
+            Allows specialised classes to apply any specific extra logic which would prevent the message being logged.
+            </summary>
+            <para>This is the last chance to prevent message formatting code from kicking in.</para>
+            <param name="severity"></param>
+            <param name="source"></param>
+            <param name="message"></param>
+            <param name="id"></param>
+            <param name="details"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.OnLogEvent(MGS.Logging.Severity,System.String,System.String,System.Int32,System.Object)">
+            <summary>
+            Abstract method through which all logging is funnelled when using an MGS.Logging trace listener. Derived classes must implement this to log in their specialised way.
+            </summary>
+            <param name="severity"></param>
+            <param name="source"></param>
+            <param name="message"></param>
+            <param name="id"></param>
+            <param name="details"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.OnTraceEvent(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.String,System.Nullable{System.Guid},System.Object[])">
+            <summary>
+            Abstract method through which all traditional trace listener logging is funnelled. Derived classes must implement this to log in their specialised way.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+            <param name="message"></param>
+            <param name="relatedActivityGuid"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.Write(System.String,System.String,System.Object)">
+            <summary>
+            Redirects the implementation to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="category"></param>
+            <param name="message"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:MGS.Logging.BaseTraceListener.WriteLine(System.String,System.String,System.Object)">
+            <summary>
+            Redirects the implementation to the single abstract WriteEvent method which derived classes must implement.
+            </summary>
+            <param name="category"></param>
+            <param name="message"></param>
+            <param name="data"></param>
+        </member>
+        <member name="T:MGS.Logging.ConsoleTraceListener">
+            <summary>
+            A tracelistener which writes to the Console with colours to demarcate events of different levels.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ConsoleTraceListener.#ctor">
+            <summary>
+            Default Constructor.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ConsoleTraceListener.#ctor(System.Boolean)">
+            <summary>
+            Constructor which accepts initializeData.
+            </summary>
+            <param name="useErrorStream"></param>
+        </member>
+        <member name="M:MGS.Logging.ConsoleTraceListener.GetSupportedAttributes">
+            <summary>
+            Provides the list of custom attributes supported by this listener.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.Logging.ConsoleTraceListener.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the <see cref="T:System.Diagnostics.TraceListener"/> and optionally releases the managed resources.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        </member>
+        <member name="M:MGS.Logging.ConsoleTraceListener.OnLogEvent(MGS.Logging.Severity,System.String,System.String,System.Int32,System.Object)">
+            <summary>
+            Abstract method through which all logging is funnelled when using an MGS.Logging trace listener. Derived classes must implement this to log in their specialised way.
+            </summary>
+            <param name="severity"></param>
+            <param name="source"></param>
+            <param name="message"></param>
+            <param name="id"></param>
+            <param name="details"></param>
+        </member>
+        <member name="M:MGS.Logging.ConsoleTraceListener.OnTraceEvent(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.String,System.Nullable{System.Guid},System.Object[])">
+            <summary>
+            Implementation of the base class abstract method through which all logging is funnelled.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+            <param name="message"></param>
+            <param name="relatedActivityGuid"></param>
+            <param name="data"></param>
+        </member>
+        <member name="M:MGS.Logging.ConsoleTraceListener.GetConsoleColor(System.Diagnostics.TraceEventType)">
+            <summary>
+            Gets the colour for the specified event type, if any. Otherwise returns the default colour.
+            </summary>
+            <param name="eventType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.Logging.ConsoleTraceListener.SetConsoleColour(System.Diagnostics.TraceEventType,System.ConsoleColor)">
+            <summary>
+            Define the colour which should be used for traces of the specified event type.
+            </summary>
+            <param name="eventType"></param>
+            <param name="colour"></param>
+        </member>
+        <member name="P:MGS.Logging.ConsoleTraceListener.ApplicationName">
+            <summary>
+            Set the custom application name.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.ConsoleTraceListener.Console">
+            <summary>
+            The active console. Defaults to System.Console.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.ConsoleTraceListener.IsThreadSafe">
+            <summary>
+            This listener is threadsafe and does not need help from the System.Diagnostics framework in order to be threadsafe.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.ConsoleTraceListener.Template">
+            <summary>
+            Get or Set the template used to control formatting of the output.
+            </summary>
+            <remarks>
+            <para>
+            Supported tags: {LocalDateTime} {DateTime} {UtcDateTime} {Thread} {ThreadId} {EventType} {Source} {Id} {Message} {Data}
+            </para>
+            </remarks>
+        </member>
+        <member name="P:MGS.Logging.ConsoleTraceListener.TraceDateTimeFormat">
+            <summary>
+            Get the format used for {DateTime}, {UtcDateTime} and {LocalDateTime} fragments used in the trace messages.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.ConsoleTraceListener.UseErrorStream">
+            <summary>
+            Get whether to use the error output stream or not.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.IConsole">
+            <summary>
+            Abstraction for the Console in order to ease unit testing.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.IConsole.ResetColor">
+            <summary>
+            Sets the foreground and background colours back to their defaults.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.IConsole.Error">
+            <summary>
+            Get the error output stream.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.IConsole.ForegroundColor">
+            <summary>
+            Get or Set the foreground colour for the console.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.IConsole.Out">
+            <summary>
+            Get the standard output stream.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.EtwTraceListener">
+            <summary>
+            A tracelistener which writes to Event Tracing for Windows (ETW) in a form retrievable by the MGS.SemanticLogging plugin for the Semantic Logging Service.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.EtwTraceListener.#ctor">
+            <summary>
+            Default Constructor.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.EtwTraceListener.#ctor(System.String,MGS.Logging.ILoggingEventSource)">
+            <summary>
+            Constructor which takes an ILoggingEventSource (handy for unit tests).
+            </summary>
+            <param name="appName"></param>
+            <param name="eventSource"></param>
+        </member>
+        <member name="M:MGS.Logging.EtwTraceListener.#ctor(System.String)">
+            <summary>
+            Constructor which takes initializeData.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.EtwTraceListener.GetSupportedAttributes">
+            <summary>
+            Provides the list of custom attributes supported by this listener.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.Logging.EtwTraceListener.Dispose(System.Boolean)">
+            <summary>
+            Releases the unmanaged resources used by the <see cref="T:System.Diagnostics.TraceListener"/> and optionally releases the managed resources.
+            </summary>
+            <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        </member>
+        <member name="M:MGS.Logging.EtwTraceListener.OnShouldTrace(MGS.Logging.Severity,System.String,System.String,System.Int32,System.Object,System.Object)">
+            <summary>
+            Overriden in order to check if any ETW listeners are actually listening for a message of the appropriate severity.
+            </summary>
+            <param name="severity"></param>
+            <param name="source"></param>
+            <param name="message"></param>
+            <param name="id"></param>
+            <param name="details"></param>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.Logging.EtwTraceListener.OnLogEvent(MGS.Logging.Severity,System.String,System.String,System.Int32,System.Object)">
+            <summary>
+            Implementation of abstract method through which all logging is funnelled when using an MGS.Logging trace listener. Derived classes must implement this to log in their specialised way.
+            </summary>
+            <param name="severity"></param>
+            <param name="source"></param>
+            <param name="message"></param>
+            <param name="id"></param>
+            <param name="details"></param>
+        </member>
+        <member name="M:MGS.Logging.EtwTraceListener.OnTraceEvent(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.String,System.Nullable{System.Guid},System.Object[])">
+            <summary>
+            Implementation of abstract method through which all traditional trace listener logging is funnelled. Derived classes must implement this to log in their specialised way.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+            <param name="message"></param>
+            <param name="relatedActivityGuid"></param>
+            <param name="data"></param>
+        </member>
+        <member name="P:MGS.Logging.EtwTraceListener.Template">
+            <summary>
+            Get or Set the template used to control formatting of the output.
+            </summary>
+            <remarks>
+            <para>
+            Supported tags: {LocalDateTime} {DateTime} {UtcDateTime} {Thread} {ThreadId} {EventType} {Source} {Id} {Message} {Data}
+            </para>
+            </remarks>
+        </member>
+        <member name="P:MGS.Logging.EtwTraceListener.TraceDateTimeFormat">
+            <summary>
+            Get the format used for {DateTime}, {UtcDateTime} and {LocalDateTime} fragments used in the trace messages.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.EtwTraceListener.ApplicationName">
+            <summary>
+            Set the custom application name.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.FileTraceListener">
+            <summary>
+            A TraceListener which writes to a file on disk. Supports various formatting options, rollover by time/size and deleting the file while the application is still running.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.FileTraceListener.#ctor">
+            <summary>
+            Default Constructor.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.FileTraceListener.#ctor(System.String)">
+            <summary>
+            Constructor with initializeData.
+            </summary>
+            <param name="filePathTemplate"></param>
+        </member>
+        <member name="M:MGS.Logging.FileTraceListener.Flush">
+            <summary>
+            Flushes any async writes.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.FileTraceListener.GetSupportedAttributes">
+            <summary>
+            Provides the list of custom attributes supported by this listener.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.Logging.FileTraceListener.Dispose(System.Boolean)">
+            <summary>
+            Implementation of Dispose to dispose _writer
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:MGS.Logging.FileTraceListener.OnLogEvent(MGS.Logging.Severity,System.String,System.String,System.Int32,System.Object)">
+            <summary>
+            Implementation of abstract method through which all logging is funnelled when using an MGS.Logging trace listener. Derived classes must implement this to log in their specialised way.
+            </summary>
+            <param name="severity"></param>
+            <param name="source"></param>
+            <param name="message"></param>
+            <param name="id"></param>
+            <param name="details"></param>
+        </member>
+        <member name="M:MGS.Logging.FileTraceListener.OnTraceEvent(System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.String,System.Nullable{System.Guid},System.Object[])">
+            <summary>
+            Implementation of the base class abstract method through which all logging is funnelled.
+            </summary>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+            <param name="message"></param>
+            <param name="relatedActivityGuid"></param>
+            <param name="data"></param>
+        </member>
+        <member name="P:MGS.Logging.FileTraceListener.ApplicationName">
+            <summary>
+            Set the custom application name.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.FileTraceListener.File">
+            <summary>
+            Get or Set the underlying implementation which opens the file stream. Handy for unit testing. Defaults to System.IO.File.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.FileTraceListener.IsThreadSafe">
+            <summary>
+            This listener is threadsafe and does not need help from the System.Diagnostics framework in order to be threadsafe.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.FileTraceListener.Template">
+            <summary>
+            Get or Set the template used to control formatting of the output.
+            </summary>
+            <remarks>
+            <para>
+            Supported tags: {LocalDateTime} {DateTime} {UtcDateTime} {Thread} {ThreadId} {EventType} {Source} {Id} {Message} {Data}
+            </para>
+            </remarks>
+        </member>
+        <member name="P:MGS.Logging.FileTraceListener.FileNameDateTimeFormat">
+            <summary>
+            Get the format used for {DateTime}, {UtcDateTime} and {LocalDateTime} fragments used in the file name.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.FileTraceListener.TraceDateTimeFormat">
+            <summary>
+            Get the format used for {DateTime}, {UtcDateTime} and {LocalDateTime} fragments used in the trace messages.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.FileTraceListener.RolloverSizeInBytes">
+            <summary>
+            Gets the size at which the file should automatically roll over. Set by the rolloverSizeInBytes attribute in app.config.
+            </summary>
+        </member>
+        <member name="P:MGS.Logging.FileTraceListener.FilePathTemplate">
+            <summary>
+            Gets the current template used for deciding the path of the log file.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.IFile">
+            <summary>
+            Abstracts the ability to open a file stream to ease unit testing.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.IFile.Open(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+            <summary>
+            Open a file stream with the specified options.
+            </summary>
+            <param name="path"></param>
+            <param name="mode"></param>
+            <param name="access"></param>
+            <param name="share"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MGS.Logging.TraceFormatter.Format(System.String,System.Diagnostics.TraceListener,System.Diagnostics.TraceEventCache,System.String,System.Diagnostics.TraceEventType,System.Int32,System.String,System.Nullable{System.Guid},System.Object[],System.Object,System.String)">
+            <summary>
+            Formats using the specified template and input data.
+            </summary>
+            <para>
+            Format is controlled via the following replacement tokens:
+            {LocalDateTime}
+            {UtclDateTime}
+            {DateTime} 
+            {Thread} 
+            {ThreadId} 
+            {EventType} 
+            {Source}
+            {Id}
+            {Message}
+            {Data}
+            {RelatedActivityId}
+            {Data0}
+            {CallStack}
+            {ProcessId}
+            {TimeStamp}
+            {MachineName}
+            {ProcessName}
+            {User}
+            {Process}
+            {ApplicationName}
+            {AppDomain}
+            {PrincipalName}
+            {WindowsIdentityName}
+            {Listener}
+            {Details}
+            {PrettyDetails}
+            {\r}
+            {\n}
+            {\t}
+            </para>
+            <param name="template"></param>
+            <param name="listener"></param>
+            <param name="eventCache"></param>
+            <param name="source"></param>
+            <param name="eventType"></param>
+            <param name="id"></param>
+            <param name="message"></param>
+            <param name="relatedActivityId"></param>
+            <param name="data"></param>
+            <param name="details"></param>
+            <param name="dateTimeFormat"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MGS.Logging.LogContext">
+            <summary>
+            Offers a per-thread facility to group related messages such that they can be logged together if desired.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.LogContext._threadContext">
+            <summary>
+            Ensure that we have one instance of this member per-thread
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.LogContext._outerContext">
+            <summary>
+            To maintain the potentially nested nature of a LogContext (within a LogContext inside a dream within a suspension).
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.LogContext._entries">
+            <summary>
+            To hold the events which might be logged.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.LogContext._disposed">
+            <summary>
+            Standard field to ensure that Dispose actions happen at most once.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.LogContext.#ctor(System.String,System.Int32,MGS.Logging.Severity)">
+            <summary>
+            Creates a new log context. Should always be wrapped inside a using statement.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.LogContext.AddEntry(MGS.Logging.Severity,System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Adds a new entry to the list of related events.
+            </summary>
+            <param name="severity">The <see cref="T:MGS.Logging.Severity"/> of the event.</param>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+        <member name="M:MGS.Logging.LogContext.Dispose">
+            <summary>
+            Implementation of the Dispose pattern.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.LogContext.TransferEntries(System.Collections.Generic.IEnumerable{MGS.Logging.Entry})">
+            <summary>
+            Transfers the specified entries to this <c>LogContext</c>.
+            </summary>
+            <param name="entries">A collection of the events to be transferred.</param>
+        </member>
+        <member name="P:MGS.Logging.LogContext.Current">
+            <summary>
+            Indicate the active LogContext for the current thread, if any.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.LoggingEventSource">
+            <summary>
+            Provides methods for logging through to Event Tracing for Windows (ETW).
+            </summary>
+            <remarks>
+            The <code>ILoggingEventSource</code> interface is implemented explicitly in order for the unit tests to work.
+            See <see href="http://stackoverflow.com/questions/16301553/why-does-implementing-an-interface-on-a-subclass-of-eventsource-throw-an-excepti"/>.
+            </remarks>
+        </member>
+        <member name="T:MGS.Logging.Severity">
+            <summary>
+            An enumeration for the various severities of events. 
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.Severity.Verbose">
+            <summary>
+            The severity suitable for events which are profligate and intended for debug purposes.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.Severity.Informational">
+            <summary>
+            The severity suitable for events which are infrequent, benign and but of some interest.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.Severity.Warning">
+            <summary>
+            The severity suitable for events which are indicative of an unusual cirsumstances which are less than ideal but not a failure.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.Severity.Error">
+            <summary>
+            The severity suitable for events which are indicative of a non-catastrophic failure.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.Severity.Critical">
+            <summary>
+            The severity suitable for events which are indicative of a extremely serious failure.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.Severity.LogAlways">
+            <summary>
+            The severity suitable for events which should be logged regardless of the configured logging thresholds.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.TraceSourceLogger">
+            <summary>
+            Provides In-Process logging support via System.Diagnostics.TraceSource with applicable app.config entries to configure the listeners.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.ILogger">
+            <summary>
+            Interface which defines what concrete logging implementations must support.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.ILogger.LogEvent(MGS.Logging.Severity,System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Log a single event with the supplied parameters.
+            </summary>
+            <param name="severity">The <see cref="T:MGS.Logging.Severity"/> of the event.</param>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+        <member name="M:MGS.Logging.ILogger.LogEvents(System.Collections.Generic.IEnumerable{MGS.Logging.Entry})">
+            <summary>
+            Log multiple events. 
+            </summary>
+            <param name="entries">An collection of events which are candidates for logging.</param>
+            <remarks>
+            The intent is that concrete implementations of this interface should actually log the entries only if at least one of them
+            transgresses the active logging threshold.
+            </remarks>
+        </member>
+        <member name="M:MGS.Logging.ILogger.IsLoggingEnabled(MGS.Logging.Severity)">
+            <summary>
+            Returns whether messages of the specified severity satisfy the active logging threshold for this logger.
+            </summary>
+            <param name="severity">The <see cref="T:MGS.Logging.Severity"/> of interest.</param>
+            <returns>True if the active logging threshold is such that events of the specified severity should be logged.</returns>
+        </member>
+        <member name="F:MGS.Logging.TraceSourceLogger._watcher">
+            <summary>
+            For monitoring config file changes, for those that opt-in.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.TraceSourceLogger._lastWriteTime">
+            <summary>
+            Last time the file was touched.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.TraceSourceLogger._traceSource">
+            <summary>
+            The underlying <c>TraceSource</c> used for logging.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.TraceSourceLogger._appName">
+            <summary>
+            Supplied app name, if any.
+            </summary>
+        </member>
+        <member name="F:MGS.Logging.TraceSourceLogger._disposed">
+            <summary>
+            Standard field to ensure that Dispose actions happen at most once.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.TraceSourceLogger.#ctor(System.Diagnostics.TraceSource,System.String)">
+            <summary>
+            Handy for unit tests.
+            </summary>
+            <param name="traceSource"></param>
+            <param name="appName"></param>
+        </member>
+        <member name="M:MGS.Logging.TraceSourceLogger.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new logger which uses a <c>TraceSource</c> instance to write to whatever listeners are set in the app.config file.
+            </summary>
+            <param name="sourceName">The name of the <c>source</c> the app.config file.</param>
+            <param name="appName">The custom name of the application. Optional. Performs custom setup on listeners if supplied.</param>
+            <remarks> 
+            <para>
+            This logger is configured via a <c>source</c> defined in the <c>sources</c>section <c>system.diagnostics</c> section of app.config. 
+            </para>
+            <para>
+            The <paramref name="sourceName"/> is used to set the name of the source. 
+            </para>
+            <para>
+            The <paramref name="appName"/> is used to setup listeners with the custom application name. Very useful when multiple instances of the same exe 
+            are running, each with different names (e.g. Veyron). It also sets the EventSource for <c>EventLogTraceListener</c> and replaces the {ApplicationName} 
+            tag used in the format template for the <c>FileTraceListener</c>, <c>ConsoleTraceListener</c> and <c>EtwTraceListener</c>.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:MGS.Logging.TraceSourceLogger.LogEvent(MGS.Logging.Severity,System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Log a single event with the supplied parameters.
+            </summary>
+            <param name="severity">The <see cref="T:MGS.Logging.Severity"/> of the event.</param>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+        <member name="M:MGS.Logging.TraceSourceLogger.LogEvents(System.Collections.Generic.IEnumerable{MGS.Logging.Entry})">
+            <summary>
+            Log multiple events. 
+            </summary>
+            <param name="entries">An collection of events which are candidates for logging.</param>
+            <remarks>
+            The entries will be logged if at least one of them transgresses the active logging threshold otherwise they will be discarded.
+            </remarks>
+        </member>
+        <member name="M:MGS.Logging.TraceSourceLogger.IsLoggingEnabled(MGS.Logging.Severity)">
+            <summary>
+            Returns whether messages of the specified severity satisfy the active logging threshold for this logger.
+            </summary>
+            <param name="severity">The <see cref="T:MGS.Logging.Severity"/> of interest.</param>
+            <returns>True if the active logging threshold is such that events of the specified severity should be logged.</returns>
+        </member>
+        <member name="M:MGS.Logging.TraceSourceLogger.Dispose">
+            <summary>
+            Implementation of the Dispose method.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.TraceSourceLogger.NotifyConfigurationChanged">
+            <summary>
+            Notify the logger when the configuration file has changed (so it can reload changes on the fly).
+            Exceptions will be swallowed (occasionally there can be file sharing issues).
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.TraceSourceLogger.LogEvents(MGS.Logging.Severity,System.Collections.Generic.IEnumerable{MGS.Logging.Entry})">
+            <summary>
+            Combine and log all messages together to make things easier for examination later 
+            </summary>
+            <param name="severity"></param>
+            <param name="entries"></param>
+        </member>
+        <member name="P:MGS.Logging.TraceSourceLogger.MonitorConfigChanges">
+            <summary>
+            If true will watch for config file changes to logging thresholds and react accordingly. Defaults to false.
+            Should not be used for web applications since IIS is already monitoring web.config for changes.
+            </summary>
+        </member>
+        <member name="T:MGS.Logging.Logger">
+            <summary>
+            Static class which is the entrypoint for consumers to add ILogger implementations and to perform their logging. 
+            Logs to whatever ILogger implementation(s) have been added (if any).
+            </summary>
+            <remarks>
+            <para>
+            If no loggers are added (or if no loggers are able to log a message) it will fall back to writing to the console.
+            </para>
+            <para>
+            Exceptions which occur during the act of logging are not permitted to escape. 
+            </para>
+            <para>
+            Access to the collection of loggers is intentionally not thread-safe in order to make the logging as efficient as possible. This is because
+            the usual use-case for application is to add loggers at the start (in one thread), use that collection in a readonly fashion for the
+            life of the application (from many threads) and then perform the disposal from one thread on shutdown once all others have closed.
+            The expectation is that applications will follow this pattern. Any individual ILogger implementations added to <see cref="T:MGS.Logging.Logger"/> are expected 
+            to be threadsafe themselves . The two supplied implementations <code>TraceSourceLogger</code> and <code>EventSourceLogger</code> are threadsafe.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:MGS.Logging.Logger.IsLoggingEnabled(MGS.Logging.Severity)">
+            <summary>
+            Returns whether messages of the specified severity satisfy the active logging threshold for any of the added loggers.
+            </summary>
+            <param name="severity">The <see cref="T:MGS.Logging.Severity"/> of interest.</param>
+            <returns>True if the active logging threshold for any logger is such that events of the specified severity should be logged.</returns>
+        </member>
+        <member name="M:MGS.Logging.Logger.AddLogger(MGS.Logging.ILogger)">
+            <summary>
+            Adds the specified logger to the collection and will attempt to use it to log messages.
+            </summary>
+            <param name="logger">A implementation of ILogger to add.</param>
+        </member>
+        <member name="M:MGS.Logging.Logger.RemoveLogger(MGS.Logging.ILogger)">
+            <summary>
+            Removes the specified logger from the collection and calls <c>Dispose</c> on it.
+            </summary>
+            <param name="logger">The implementation of ILogger to remove.</param>
+        </member>
+        <member name="M:MGS.Logging.Logger.Dispose">
+            <summary>
+            Removes all loggers from the collection and calls <c>Dispose</c> on each of them.
+            </summary>
+        </member>
+        <member name="M:MGS.Logging.Logger.LogAlwaysEvent(System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Logs a message which satifies the <see cref="F:MGS.Logging.Severity.LogAlways"/> threshold.
+            </summary>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+        <member name="M:MGS.Logging.Logger.LogCriticalEvent(System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Logs a message which satifies the <see cref="F:MGS.Logging.Severity.Critical"/> threshold.
+            </summary>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+        <member name="M:MGS.Logging.Logger.LogErrorEvent(System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Logs a message which satifies the <see cref="F:MGS.Logging.Severity.Error"/> threshold.
+            </summary>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+        <member name="M:MGS.Logging.Logger.LogWarningEvent(System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Logs a message which satifies the <see cref="F:MGS.Logging.Severity.Warning"/> threshold.
+            </summary>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+        <member name="M:MGS.Logging.Logger.LogInformationalEvent(System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Logs a message which satifies the <see cref="F:MGS.Logging.Severity.Informational"/> threshold.
+            </summary>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+        <member name="M:MGS.Logging.Logger.LogVerboseEvent(System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Logs a message which satifies the <see cref="F:MGS.Logging.Severity.Verbose"/> threshold.
+            </summary>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+        <member name="M:MGS.Logging.Logger.Context(System.String,System.Int32,MGS.Logging.Severity)">
+            <summary>
+            Opens the scope of a new LogContext in order to collect related messages.
+            </summary>
+            <param name="name">A string name for the context.</param>
+            <param name="eventID">An integer identifier for the context.</param>
+            <param name="severity">The severity with which the event to open the scope should be logged.</param>
+            <returns>An object supporting IDisposable.</returns>
+            <remarks>
+            The intended use of this method is inside a using statement, i.e.
+            <code>
+            using (Logger.Context("My Context"))
+            {
+              // lots of code including more invocations of Logger.Log... which will be collated and sent to the 
+              // concrete ILogger implementations when the scope exits. 
+            }
+            </code>
+            </remarks>
+        </member>
+        <member name="M:MGS.Logging.Logger.LogEvent(MGS.Logging.Severity,System.String,System.Int32,System.Object,System.Object[])">
+            <summary>
+            Logs a message at a specified severity.
+            </summary>
+            <param name="severity">The severity of the message.</param>
+            <param name="message">A string containing the message and standard formatting placeholders.</param>
+            <param name="eventID">An integer identifier for the event.</param>
+            <param name="details">An object which contains additional detail about the event.</param>
+            <param name="formatParameters">An object array containing zero or more objects to format.</param>
+        </member>
+    </members>
+</doc>
