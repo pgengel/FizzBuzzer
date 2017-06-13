@@ -21,7 +21,7 @@ namespace FizzBuzzApp
 			IFizzBuzzer Q4 = new global::FizzBuzz.Gen1.FizzBuzzer(new ValidateFizz(), new ValidateBuzz());
 			for (int i = 1; i <= 100; i++)
 			{
-				Q4.Print(i, new ConsoleWriter());
+				Q4.Write(i, new ConsoleWriter());
 			}
 			Console.ReadLine();
 		}

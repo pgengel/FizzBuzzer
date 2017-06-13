@@ -27,7 +27,7 @@ namespace FizzBuzz.Test.Gen1
 
 			_fizzBuzzer = new FizzBuzzer(validateFizz, validateBuzz);
 
-			var actual = _fizzBuzzer.Print(3, new ConsoleWriter());
+			var actual = _fizzBuzzer.Write(3, new ConsoleWriter());
 
 			Assert.AreEqual(actual, "Fizz");
 		}
@@ -43,7 +43,7 @@ namespace FizzBuzz.Test.Gen1
 
 			_fizzBuzzer = new FizzBuzzer(validateFizz, validateBuzz);
 
-			var actual = _fizzBuzzer.Print(5, new ConsoleWriter());
+			var actual = _fizzBuzzer.Write(5, new ConsoleWriter());
 
 			Assert.AreEqual(actual, "Buzz");
 		}
@@ -59,7 +59,7 @@ namespace FizzBuzz.Test.Gen1
 
 			_fizzBuzzer = new FizzBuzzer(validateFizz, validateBuzz);
 
-			var actual = _fizzBuzzer.Print(15, new ConsoleWriter());
+			var actual = _fizzBuzzer.Write(15, new ConsoleWriter());
 
 			Assert.AreEqual(actual, "FizzBuzz");
 		}
@@ -75,7 +75,7 @@ namespace FizzBuzz.Test.Gen1
 
 			_fizzBuzzer = new FizzBuzzer(validateFizz, validateBuzz);
 
-			var actual = _fizzBuzzer.Print(1, new ConsoleWriter());
+			var actual = _fizzBuzzer.Write(1, new ConsoleWriter());
 
 			Assert.AreEqual(actual, "1");
 		}
@@ -89,7 +89,7 @@ namespace FizzBuzz.Test.Gen1
 
 			_fizzBuzzer = new FizzBuzzer(validateFizz, validateBuzz);
 
-			Assert.Throws<ArgumentException>(() => _fizzBuzzer.Print(0, new ConsoleWriter()));
+			Assert.Throws<ArgumentException>(() => _fizzBuzzer.Write(0, new ConsoleWriter()));
 		}
 
 		[Test]
@@ -101,7 +101,7 @@ namespace FizzBuzz.Test.Gen1
 
 			_fizzBuzzer = new FizzBuzzer(validateFizz, validateBuzz);
 
-			Assert.Throws<ArgumentException>(() => _fizzBuzzer.Print(101, new ConsoleWriter()));
+			Assert.Throws<ArgumentException>(() => _fizzBuzzer.Write(101, new ConsoleWriter()));
 		}
 	}
 }

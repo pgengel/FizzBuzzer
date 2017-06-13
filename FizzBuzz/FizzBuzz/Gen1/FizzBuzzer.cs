@@ -24,7 +24,7 @@ namespace FizzBuzz.Gen1
 
 		}
 		//it is returning a string just for unit testing purposes.
-		public string Print(int number, IConsoleWriter consoleWriter)
+		public string Write(int number, IConsoleWriter consoleWriter)
 		{
 			this._consoleWriter = consoleWriter;
 

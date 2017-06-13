@@ -2,6 +2,6 @@
 {
 	public interface IFizzBuzzer
 	{
-		string Print(int number, IConsoleWriter consoleWriter);
+		string Write(int number, IConsoleWriter consoleWriter);
 	}
 }
